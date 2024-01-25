@@ -3,7 +3,7 @@ import img from '../assets/writing.gif';
 
 export default function Introduction() {
     return (
-        <div className="h-[90%] px-32 pb-6 bg-slate-800 flex flex-col text-stone-100 text-center max-lg:h-auto max-lg:px-4">
+        <div className="hide-scroll h-[90%] px-32 overflow-scroll pb-6 bg-slate-800 flex flex-col text-stone-100 text-center max-lg:h-auto max-lg:px-4">
             <h1 className="heading text-4xl font-bold mb-4">Welcome to Web Scribbles</h1>
             <p className="text-lg leading-7">
                 Dive into a world of creativity and knowledge at Web Scribbles. Our platform is a hub for insightful blogs, engaging stories, and diverse perspectives. Whether you're an aspiring writer or a curious reader, you're invited to be a part of this vibrant community.

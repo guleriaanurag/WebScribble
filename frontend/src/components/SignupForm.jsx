@@ -1,6 +1,7 @@
 import { Form, Link, redirect } from "react-router-dom";
 import axios from 'axios';
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 export default function SignupForm(){
 
@@ -28,6 +29,24 @@ export async function action({request}){
     const response = await axios.post(import.meta.env.VITE_BACKEND_URL+'signup',data);
     if(response.data && response.data.token){
         Cookies.set('authToken',response.data.token,{secure:true,expires: 24});
+        toast.success('User registered',{
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            progress: undefined,
+            theme: "colored",
+        })
+    }
+    else{
+        toast.error(response.data.message,{
+            autoClose: 4000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            progress: undefined,
+            theme: 'colored'
+        })
     }
     return redirect('/blogs');
 }

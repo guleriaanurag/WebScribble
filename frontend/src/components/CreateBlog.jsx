@@ -1,24 +1,39 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useContext } from "react";
-import { Form, redirect } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { Form, redirect, useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../store/AuthenticationContext";
+import { toast } from 'react-toastify'
 
 export default function CreateBlog(){
     
     const {isAuthenticated} = useContext(AuthenticationContext);
-    
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        if(Cookies.get('authToken')===undefined){
+            toast.error('You need to login first',{
+                theme:'colored',
+                pauseOnHover: false,
+                closeOnClick: true,
+                autoClose: true,
+                progress: undefined
+            })
+            navigate('/login');
+        }
+    },[navigate])
+
     return(
         <div className="form-div w-full h-full flex items-center justify-center">
             <Form method='POST' encType='multipart/form-data' className="bg-slate-700 flex flex-col p-7 w-[50%] gap-3 rounded-lg">
                 <label htmlFor="title" className="text-stone-100">Title:</label>
-                <input type="text" name="title" id="title"/>
+                <input type="text" name="title" id="title" className="outline-none pl-1 py-1 rounded-lg"/>
                 <label htmlFor="image" className="text-stone-100">Image:</label>
-                <input type='file' name="image" id="image" accept='image/*' />
+                <input type='file' name="image" id="image" accept='image/*'/>
                 <label htmlFor="content" className="text-stone-100">Content:</label>
-                <textarea name="content" id="content" cols="20" rows="5" placeholder="Content...."></textarea>
+                <textarea name="content" id="content" cols="20" rows="5" placeholder="Content...." className="outline-none pl-1 py-1 rounded-lg"></textarea>
                 <label htmlFor="category" className="text-stone-100">Category:</label>
-                <select name="category" id="category">
+                <select name="category" id="category" className="rounded-lg outline-none pl-1 py-1">
                     <option value="All">All</option>
                     <option value="Science">Science</option>
                     <option value="Music">Music</option>
@@ -45,8 +60,21 @@ export async function action({request}){
                 'Authorization': `Bearer ${cookie}`
             }
         })
+        toast.success('The blog is posted',{
+            theme: 'colored',
+            pauseOnHover: false,
+            closeOnClick: true,
+            autoClose: true,
+            progress: undefined
+        })
     } catch (error) {
-        console.log(error);
+        toast.error('An error occured while posting the blog',{
+            theme: 'colored',
+            pauseOnHover: false,
+            closeOnClick: true,
+            autoClose: true,
+            progress: undefined
+        });
     }
     return redirect('..');
 }

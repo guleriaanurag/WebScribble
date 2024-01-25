@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthenticationContext } from "../store/AuthenticationContext";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
 
 export default function Header(){
 
@@ -9,6 +10,13 @@ export default function Header(){
 
     function handleLogout(){
         Cookies.remove('authToken');
+        toast.error('User logged out',{
+            pauseOnHover:false,
+            autoClose: 4000,
+            hideProgressBar: false,
+            theme: 'colored',
+            closeOnClick: true
+        });
         logoutUser();
     }
 
@@ -19,7 +27,7 @@ export default function Header(){
                 <Link to='/login'><button className="px-5 outline-none bg-slate-100 rounded-xl text-lg h-12 max-lg:h-[60%] max-lg:my-auto">SignIn</button></Link>
                 )}
             {isAuthenticated===true && (
-                <button className="px-5 outline-none bg-slate-100 rounded-xl text-lg h-auto max-lg:h-[60%] max-lg:my-auto" onClick={handleLogout}>Logout</button>
+                <button className="px-5 outline-none bg-slate-100 rounded-xl text-lg h-12 max-lg:h-[60%] max-lg:my-auto" onClick={handleLogout}>Logout</button>
             )}
         </header>
     );
