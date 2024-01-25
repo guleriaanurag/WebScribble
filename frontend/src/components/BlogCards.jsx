@@ -16,7 +16,7 @@ export default function BlogCards({data}){
             <h2 className="text-md mt-2 overflow-hidden whitespace-nowrap text-ellipsis line-clamp-0">{data.title}</h2>
             <p className="overflow-hidden text-ellipsis line-clamp-2">{data.content}</p>
             <div className="flex justify-around items-end h-14">
-                <h3>Categoty: {data.category}</h3>
+                <h3>Category: {data.category}</h3>
                 <p className="text-right align-text-bottom">by {data.author.name}</p>
             </div>
         </div>
