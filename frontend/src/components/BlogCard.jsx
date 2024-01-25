@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export default function BlogCards({data}){
+export default function BlogCard({data}){
     
     let blogId = data._id;
     const navigate = useNavigate();

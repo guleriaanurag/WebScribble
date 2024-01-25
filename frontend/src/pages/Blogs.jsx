@@ -1,6 +1,6 @@
 import { Link, useLoaderData } from "react-router-dom";
 import axios from 'axios';
-import BlogCards from "../components/BlogCards";
+import BlogCard from "../components/BlogCard";
 import { useContext,useEffect } from "react";
 import { AuthenticationContext } from "../store/AuthenticationContext";
 import Cookies from "js-cookie";
@@ -30,7 +30,7 @@ export default function Blogs(){
             )}
             <div className="grid grid-cols-4 px-10 mt-6 max-lg:grid-cols-2 max-md:grid-cols-1 max-md:px-3">
                 {data.map((d)=>{
-                    return <BlogCards key={d._id} data={d}/>
+                    return <BlogCard key={d._id} data={d}/>
                 })}
             </div>
         </div>
