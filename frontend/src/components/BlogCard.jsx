@@ -6,7 +6,6 @@ export default function BlogCard({data}){
     const navigate = useNavigate();
 
     function openBlogPage(){
-        console.log(blogId);
         navigate(`/blogs/blog/${blogId}`);
     }
 
