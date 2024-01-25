@@ -118,9 +118,9 @@ router.post('/blog',upload.single('image'),authenticate,validateBlog,async (req,
         })
         await newBlog.save();
     } catch (error) {
-        res.status(500).send({
+        res.send({
             success: false,
-            message: 'An error occured while adding the blog.'
+            message: error.message || 'An error occured while adding the blog.'
         })
     }
 })
@@ -128,8 +128,12 @@ router.post('/blog',upload.single('image'),authenticate,validateBlog,async (req,
 
 router.put('/blog/:id',upload.single('image'),authenticate,validateBlog,async (req,res)=>{
     try {
-        const blogPost = await blog.findById(req.params.id)
+        const blogPost = await blog.findById(req.params.id);
         if(blogPost){
+            if(req.body.author !== blog.author){
+                res.send({success: false,message: 'Unauthorized access'});
+                return;
+            }
             const imgName = req.file.filename;
             const prevImageName = blogPost.imageName;
             if(imgName!==prevImageName){
@@ -137,7 +141,7 @@ router.put('/blog/:id',upload.single('image'),authenticate,validateBlog,async (r
                     await fs.unlink(path.join(__dirname,'uploads',prevImageName));
                 }
                 catch(error){
-                    throw new Error(error.message);
+                    console.log('Image file could not be deleted');
                 }
             }
             const { title,content,category } = req.body
@@ -152,10 +156,10 @@ router.put('/blog/:id',upload.single('image'),authenticate,validateBlog,async (r
             await blog.updateOne({_id: req.params.id},updatedBlog);
         }
         else{
-            throw new Error('Something went wrong...');
+            res.status(500).send({success:false,message:'Something went wrong...'});
         }
     } catch (error) {
-        res.status(500).json({
+        res.status(500).send({
             success: false,
             message: 'Something went wrong...'
         })
@@ -164,12 +168,17 @@ router.put('/blog/:id',upload.single('image'),authenticate,validateBlog,async (r
 
 router.delete('/blog/:id',authenticate,async (req,res)=>{
     try {
+        const blogToDelete = await blog.findById(req.params.id);
+        if(req.body.author!==blogToDelete._id){
+            res.send({success: false,message:'Unauthorized access'});
+            return;
+        }
         const deletedBlog = await blog.findByIdAndDelete(req.params.id);
         const imgName = deletedBlog.imageName;
         try {
             await fs.unlink(path.join(__dirname,'uploads',imgName));
         } catch (error) {
-            throw new Error(error.message);
+            res.send(error.message);
         }
         const commentsToDelete = deletedBlog.comments;
         commentsToDelete.map(async(comm)=>{

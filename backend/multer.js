@@ -8,10 +8,13 @@ const storage = multer.diskStorage({
         cb(null,path.join(__dirname,'uploads'));
     },
     filename: function(req,file,cb){
+        const allowed_file_extensions = ['.png','.jpg','.jpeg','.gif'];
         const uniqueSuffix = dt.getTime()+'-'+uid();
-        // const ext = file.mimetype.split('/')[1];
         const ext = path.extname(file.originalname);
-        cb(null,file.fieldname+'-'+uniqueSuffix+ext);
+        if(allowed_file_extensions.includes(ext)){
+            cb(null,file.fieldname+'-'+uniqueSuffix+ext);
+        }
+        return cb('Not a valid a file');
     }
 })
 
