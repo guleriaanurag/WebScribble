@@ -12,7 +12,7 @@ export default function Menu() {
 
     const classes = 'px-5 py-2 ';
     return (
-        <aside className={`h-full bg-slate-800 absolute z-[50] transition-all ease-in-out duration-[500ms] ${isMenuOpen ? 'w-[200px]' : 'w-0'}`}>
+        <aside className={`h-full min-h-screen bg-slate-800 absolute max-md:absolute z-[50] transition-all ease-in-out duration-[500ms] ${isMenuOpen ? 'w-[200px]' : 'w-0'}`}>
             <button className='focus:outline-none relative left-full top-1/2' onClick={toggleMenu}>
                 {isMenuOpen ? <FaChevronLeft /> : <FaChevronRight />}
             </button>

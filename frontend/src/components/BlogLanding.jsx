@@ -43,7 +43,7 @@ export default function BlogLandingPage(){
                     <button className="pl-4 hover:text-red-700" onClick={handleDeleteBlog}>Delete</button>
                 </div>
             )}
-            <img src={`${import.meta.env.VITE_BACKEND_URL}image/${data.imageName}`} alt={data.title} className="w-[80%] h-[80%] object-contain max-lg:object-fill"/>
+            <img src={`${import.meta.env.VITE_BACKEND_URL}image/${data.imageName}`} alt={data.title} className="w-[80%] h-[80%] object-contain max-lg:object-fill max-md:w-[90%] max-md:h-[70%]"/>
             <p className="mt-10 text-center px-40 max-lg:px-5">{data.content}</p>
         </div>
     );

@@ -10,7 +10,7 @@ export default function BlogCard({data}){
     }
 
     return(
-        <div onClick={openBlogPage} className="w-[300px] h-[300px] text-center mx-4 my-4 p-5 bg-slate-800 text-slate-100 rounded-xl shadow-[rgba(0,0,15,0.5)_10px_15px_10px_10px] transition ease-in-out duration-300 hover:shadow-[rgba(0,0,15,0.5)_10px_15px_10px_5px]">
+        <div onClick={openBlogPage} className="w-[300px] h-[300px] text-center mx-4 my-4 max-md:my-8 p-5 bg-slate-800 text-slate-100 rounded-xl shadow-[rgba(0,0,15,0.5)_10px_15px_10px_10px] transition ease-in-out duration-300 hover:shadow-[rgba(0,0,15,0.5)_10px_15px_10px_5px]">
             <img src={`${import.meta.env.VITE_BACKEND_URL}image/${data.imageName}`} alt={data.title} className="h-[50%] w-full object-cover rounded-lg overflow-hidden"/>
             <h2 className="text-md mt-2 overflow-hidden whitespace-nowrap text-ellipsis line-clamp-0">{data.title}</h2>
             <p className="overflow-hidden text-ellipsis line-clamp-2">{data.content}</p>

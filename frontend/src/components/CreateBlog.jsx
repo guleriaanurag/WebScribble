@@ -25,7 +25,7 @@ export default function CreateBlog(){
 
     return(
         <div className="form-div w-full h-full flex items-center justify-center">
-            <Form method='POST' encType='multipart/form-data' className="bg-slate-700 flex flex-col p-7 w-[50%] gap-3 rounded-lg">
+            <Form method='POST' encType='multipart/form-data' className="bg-slate-700 flex flex-col p-7 w-[50%] gap-3 rounded-lg max-lg:w-[90%]">
                 <label htmlFor="title" className="text-stone-100">Title:</label>
                 <input type="text" name="title" id="title" className="outline-none pl-1 py-1 rounded-lg"/>
                 <label htmlFor="image" className="text-stone-100">Image:</label>
