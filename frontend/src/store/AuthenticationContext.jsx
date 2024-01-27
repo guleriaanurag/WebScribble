@@ -17,7 +17,7 @@ export default function AuthenticationContextProvider({children}){
     }
 
     function logoutUser(){
-        if(isAuthenticated){
+        if(isAuthenticated===true){
             setIsAuthenticated(false);
         }
     }

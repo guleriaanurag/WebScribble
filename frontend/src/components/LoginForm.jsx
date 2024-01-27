@@ -1,7 +1,6 @@
+import { toast } from 'react-toastify'
 import { Form, Link, redirect } from "react-router-dom";
 import axios from 'axios';
-import Cookies from "js-cookie";
-import { toast } from 'react-toastify'
 
 export default function LoginForm(){
 
@@ -35,7 +34,6 @@ export async function action({request}){
     }
     if(response.data && response.data.token){
         Cookies.set('authToken',response.data.token,{secure:true,expires: 1});
-        // alert('User Logged In Successfully');
         toast.success('Logged in successfully', {
             position: "top-right",
             autoClose: 5000,

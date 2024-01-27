@@ -68,7 +68,7 @@ export async function action({request}){
             progress: undefined
         })
     } catch (error) {
-        toast.error('An error occured while posting the blog',{
+        toast.error(error.message || 'An error occured while posting the blog',{
             theme: 'colored',
             pauseOnHover: false,
             closeOnClick: true,
