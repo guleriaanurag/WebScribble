@@ -12,7 +12,7 @@ const storage = multer.diskStorage({
         const uniqueSuffix = dt.getTime()+'-'+uid();
         const ext = path.extname(file.originalname);
         if(allowed_file_extensions.includes(ext)){
-            cb(null,file.fieldname+'-'+uniqueSuffix+ext);
+            return cb(null,file.fieldname+'-'+uniqueSuffix+ext);
         }
         return cb('Not a valid a file');
     }

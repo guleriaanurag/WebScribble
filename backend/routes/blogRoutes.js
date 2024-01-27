@@ -99,6 +99,7 @@ router.get('/blog/:id',async (req,res)=>{
 // BLOG CRUD OPERATIONS
 
 router.post('/blog',upload.single('image'),authenticate,validateBlog,async (req,res)=>{
+    const allowedCategories =  ['All','Science','Music','Games','Fiction','Technology','Programming'];
     try {
         let imgName
         if(req.file){
@@ -108,6 +109,11 @@ router.post('/blog',upload.single('image'),authenticate,validateBlog,async (req,
             imgName = 'NoImage.jpg'
         }
         const {title,content,category,author} = req.body
+        if(!allowedCategories.includes(category)){
+            res.status(404).send({success:false,message:'Inavlid blog category'});
+            fs.unlink(path.join(__dirname,'uploads',imgName));
+            return;
+        }
         const newBlog = new blog({
             title,
             content,
