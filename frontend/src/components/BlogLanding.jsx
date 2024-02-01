@@ -1,6 +1,7 @@
-import { useLoaderData, useSubmit } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { jwtDecode } from 'jwt-decode';
+import { toast } from 'react-toastify'
 
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -12,20 +13,18 @@ export default function BlogLandingPage(){
 
     const {isAuthenticated} = useContext(AuthenticationContext);
     const[isEditable,setIsEditable] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(()=>{
         let id=null;
         if(Cookies.get('authToken')!==undefined){
-            console.log('cookie found');
             const {userId} = jwtDecode(Cookies.get('authToken'));
-            console.log(userId);
             id = userId;
         }
         if(isAuthenticated===false){
             setIsEditable(false);
         }
         if(id===data.author._id){
-            console.log('changing edit authorization');
             setIsEditable(true);
         }
     },[isAuthenticated])
@@ -33,11 +32,30 @@ export default function BlogLandingPage(){
     function handleDeleteBlog(){
         const confirmation = confirm('Are you sure ? This blog will be deleted permanently.')
         const deleteBlog = async()=>{
-            axios.delete(import.meta.env.VITE_BACKEND_URL+`blog/${id}`,{
+            const response = await axios.delete(import.meta.env.VITE_BACKEND_URL+`blog/${data._id}`,{
                 headers:{
                     Authorization:  `Bearer ${Cookies.get('authToken')}`
                 }
             });
+            if(response.data.success===true){
+                toast.success(response.data.message,{
+                    pauseOnHover: false,
+                    theme: 'colored',
+                    hideProgressBar: false,
+                    progress: undefined,
+                    closeOnClick: true
+                })
+            }
+            else{
+                toast.error(response.data.message,{
+                    theme:'colored',
+                    pauseOnHover: false,
+                    hideProgressBar: false,
+                    progress: undefined,
+                    closeOnClick: true
+                })
+            }
+            navigate('/blogs');
         }
         if(confirmation===true){
             deleteBlog();
@@ -45,16 +63,16 @@ export default function BlogLandingPage(){
     }
 
     return(
-        <div className="hide-scroll h-full w-full px-6 flex flex-col items-center overflow-scroll">
+        <div className="h-full w-full px-6 flex flex-col items-center">
             <h1 className="heading text-center text-3xl p-4">{data.title}</h1>
             {isEditable === true && (
                 <div className="my-4 w-[80%] flex justify-end text-lg max-md:my-2">
-                    <button className="text-sky-500 bg-slate-800 w-20 p-2 rounded-lg hover:text-sky-400 hover:bg-slate-600"> <MdOutlineEdit className="inline"/> Edit</button>
+                    <Link to='edit-blog'><button className="text-sky-500 bg-slate-800 w-20 p-2 rounded-lg hover:text-sky-400 hover:bg-slate-600"> <MdOutlineEdit className="inline"/> Edit</button></Link>
                     <button className="pl-4 hover:text-red-700" onClick={handleDeleteBlog}>Delete</button>
                 </div>
             )}
             <img src={`${import.meta.env.VITE_BACKEND_URL}image/${data.imageName}`} alt={data.title} className="w-[80%] h-[80%] object-contain max-lg:object-fill max-md:w-[90%] max-md:h-[70%]"/>
-            <p className="mt-10 text-center px-40 max-lg:px-5 whitespace-pre-line">{data.content}</p>
+            <div className="blog-content mt-10 px-40 max-lg:px-5" dangerouslySetInnerHTML={{__html: data.content}}></div>
         </div>
     );
 }

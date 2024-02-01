@@ -7,10 +7,11 @@ import BlogsLayout from './pages/BlogsLayout'
 import CategoryBlogs, {loader as categoryBlogLoader} from './pages/CategoryBlogs';
 import './App.css'
 import Blogs,{loader as blogLoader} from './pages/Blogs';
-import CreateBlog , {action as createBlogAction} from './components/CreateBlog';
-import SignupForm , {action as signupAction} from './components/SignupForm'
-import LoginForm,{action as loginAction} from './components/LoginForm';
+import CreateBlog from './components/CreateBlog';
+import SignupForm from './components/SignupForm'
+import LoginForm from './components/LoginForm';
 import BlogLandingPage , {loader as blogLandingLoader} from './components/BlogLanding';
+import EditBlogForm from './components/EditBlogForm';
 
 function App() {
 
@@ -40,28 +41,36 @@ function App() {
             {
               path: 'post',
               element: <CreateBlog />,
-              action: createBlogAction
+              // action: createBlogAction
             },
             {
               path: 'blog/:id',
-              element: <BlogLandingPage />,
               loader: blogLandingLoader,
-              id: 'landing-loader'
-            }
+              id: 'landing-loader',
+              children:[,
+                {
+                  index: true,
+                  element: <BlogLandingPage />,
+                  loader: blogLandingLoader
+                },
+                {
+                  path: 'edit-blog',
+                  element: <EditBlogForm />
+                }
+              ]
+            },
           ]
         },
         {
           path: 'signup',
-          element: <SignupForm />,
-          action: signupAction
+          element: <SignupForm />
         },
         {
           path: 'login',
-          element: <LoginForm />,
-          action: loginAction
+          element: <LoginForm />
         }
       ]
-    }
+    } 
   ])
 
   return(

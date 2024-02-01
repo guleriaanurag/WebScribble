@@ -4,7 +4,6 @@ import { ToastContainer } from 'react-toastify';
 import { AuthenticationContext } from "../store/AuthenticationContext";
 import Header from "../components/Header";
 import 'react-toastify/dist/ReactToastify.css';
-import Footer from "../components/Footer";
 import Cookies from "js-cookie";
 
 export default function HomePage() {
@@ -26,7 +25,6 @@ export default function HomePage() {
             <Header />
             <ToastContainer/>
             <Outlet />
-            <Footer />
         </>
     )
 }

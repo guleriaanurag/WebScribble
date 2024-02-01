@@ -1,13 +1,44 @@
-import { Form, Link, redirect } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
 export default function SignupForm(){
 
+    const navigate = useNavigate();
+
+    async function handleSignUp(e){
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+        const response = await axios.post(import.meta.env.VITE_BACKEND_URL+'signup',data);
+        if(response.data && response.data.token){
+            Cookies.set('authToken',response.data.token,{secure:true,expires: 24});
+            toast.success('User registered',{
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                progress: undefined,
+                theme: "colored",
+            })
+        }
+        if(response.data.success === false){
+            toast.error(response.data.message,{
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                progress: undefined,
+                theme: 'colored'
+            })
+        }
+        navigate('/blogs');
+    }
+
     return (
-        <div className="w-full h-[90%] bg-slate-800 flex items-center justify-center">
-            <Form method="post" className="bg-slate-100 flex flex-col h-[45%] w-[40%] p-8 rounded-lg max-lg:h-[45%] max-lg:w-[80%]">
+        <div className="w-screen h-screen bg-slate-800 flex items-center justify-center">
+            <form method="post" onSubmit={handleSignUp} className="bg-slate-100 flex flex-col h-[45%] w-[40%] p-8 rounded-lg max-lg:h-[45%] max-lg:w-[90%]">
                 <label htmlFor="name" required>Name:</label>
                 <input type="text" name="name" id="name" className="p-1 bg-slate-300" autoComplete="off"/>
                 <label htmlFor="email">Email:</label>
@@ -15,38 +46,10 @@ export default function SignupForm(){
                 <label htmlFor="password">Password:</label>
                 <input type="password" name="password" id="password" className="p-1 bg-slate-300"/>
                 <div className="flex">
-                    <button type="button" className="bg-stone-800 text-stone-100 mt-6 w-[20%] mx-auto p-4 rounded-lg max-md:w-[40%]"><Link to='/'>Home</Link></button>
+                    <button type="button" className="bg-stone-800 text-stone-100 mt-6 w-[20%] mx-auto p-4 rounded-lg max-md:w-[40%]"><Link to='/'>Cancel</Link></button>
                     <button className="bg-stone-800 text-stone-100 mt-6 w-[20%] mx-auto p-4 rounded-lg max-md:w-[40%]">Register</button>
                 </div>
-            </Form>
+            </form>
         </div>
     );
-}
-
-export async function action({request}){
-    const formData = await request.formData();
-    const data = Object.fromEntries(formData.entries());
-    const response = await axios.post(import.meta.env.VITE_BACKEND_URL+'signup',data);
-    if(response.data && response.data.token){
-        Cookies.set('authToken',response.data.token,{secure:true,expires: 24});
-        toast.success('User registered',{
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: "colored",
-        })
-    }
-    else{
-        toast.error(response.data.message,{
-            autoClose: 4000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            progress: undefined,
-            theme: 'colored'
-        })
-    }
-    return redirect('/blogs');
 }
