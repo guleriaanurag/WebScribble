@@ -13,20 +13,20 @@ router.get('/blogs',async(req,res)=>{
     try {
         const blogs = await blog.find().populate({path: 'author',select:'-password'}).limit(25);
         if(blogs){
-            res.status(200).json({
+            res.send({
                 success: true,
                 data: blogs,
                 message: 'Blogs retrieved successfully.'
             })
         }
         else{
-            res.status(404).json({
+            res.send({
                 success: false,
                 message: 'Blogs not found.'
             })
         }
     } catch (error) {
-        res.status(500).json({
+        res.send({
             success: false,
             message: 'There was an error in blogs retrieval.'
         });
@@ -38,20 +38,20 @@ router.get('/blogs/:category',async (req,res)=>{
         const category = req.params.category || 'All'
         const blogs = await blog.find({category}).populate('author').limit(25);
         if(blogs){
-            res.status(200).json({
+            res.send({
                 success: true,
                 data: blogs,
                 message: 'Categorised Blogs found.'
             });
         }
         else{
-            res.status(404).json({
+            res.send({
                 success: false,
                 message: 'Blogs not found.'
             })
         }
     } catch (error) {
-        res.status(500).json({
+        res.send({
             staus: false,
             message: 'There was an error in retrieval of categorised blogs.'
         })
@@ -76,21 +76,20 @@ router.get('/blog/:id',async (req,res)=>{
         })
 
         if(response){
-            res.status(200).send({
+            res.send({
                 success: true,
                 data: response,
                 messge: 'Blog found'
             });
         }
         else{
-            res.status(404).send({
+            res.send({
                 success: false,
                 message: 'Blog not found'
             })
         }
     } catch (error) {
-        console.log(error);
-        res.status(500).send({
+        res.send({
             success: false,
             message: 'Unable to find the blog'
         })
@@ -111,8 +110,8 @@ router.post('/blog',upload.single('image'),authenticate,validateBlog,async (req,
         }
         const {title,content,category,author} = req.body
         if(!allowedCategories.includes(category)){
-            res.status(404).send({success:false,message:'Inavlid blog category'});
-            fs.unlink(path.join(__dirname,'uploads',imgName));
+            res.send({success:false,message:'Inavlid blog category'});
+            fs.unlink(path.join(__dirname,'..','uploads',imgName));
             return;
         }
         const newBlog = new blog({
@@ -195,12 +194,12 @@ router.delete('/blog/:id',authenticate,async (req,res)=>{
         commentsToDelete.map(async(comm)=>{
             await comment.findByIdAndDelete(comm._id);
         })
-        res.status(200).send({
+        res.send({
             success: true,
             message: 'Blog post deleted successfully.'
         })
     } catch (error) {
-        res.status(500).send({
+        res.send({
             success: false,
             message: error.message || 'Something went wrong...'
         })
@@ -211,7 +210,7 @@ router.post('/blog/:id/comment',authenticate, validateComment ,async (req,res)=>
     try {
         const blogPost = await blog.findById(req.params.id);
         if(!blogPost){
-            throw new Error('Unable to add the comment');
+            res.send({success: false,message:'Unable to add the comment'})
         }
         const { userComment } = req.body;
         const newComment = new comment({
@@ -220,12 +219,12 @@ router.post('/blog/:id/comment',authenticate, validateComment ,async (req,res)=>
         })
         const savedComment = await newComment.save();
         blogPost.comments.unshift(savedComment._id);
-        res.status(200).send({
+        res.send({
             success: true,
             message: 'Comment added to the post seccessfully'
         })
     } catch (error) {
-        res.status(500).send({
+        res.send({
             success: false,
             message: 'An error occured while posting the comment'
         })
@@ -236,13 +235,13 @@ router.patch('/blog/:blogId/comment/:id',authenticate,validateComment,async(req,
     try{
         const { userComment } = req.body;
         await comment.findByIdAndUpdate(req.params.id,userComment);
-        res.status(200).send({
+        res.send({
             success: true,
             message: 'Comment updated successfully.'
         })
     }
     catch(error){
-        res.status(500).send({
+        res.send({
             success: false,
             message: 'Comment could not be updated.'
         })
@@ -254,12 +253,12 @@ router.delete('/blog/:blogId/comment/:id',authenticate,async(req,res)=>{
         const deletedComment = await comment.findByIdAndDelete(req.params.id);
         const deletedId = deletedComment._id;
         await blog.updateOne({ _id: req.params.blogId }, { $pull: { comments: { _id: deletedId } } });
-        res.status(201).send({
+        res.send({
             success: true,
             message: 'Comment deleted successfully.'
         })
     } catch (error) {
-        res.status(500).send({
+        res.send({
             success:false,
             message: 'The comment could not be deleted.'
         })
