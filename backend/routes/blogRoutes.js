@@ -7,6 +7,7 @@ const { validateBlog,validateComment } = require('../validationAndSantization');
 const blog = require('../models/blog');
 const comment = require('../models/comment');
 const path = require('path');
+const { default: mongoose } = require('mongoose');
 
 router.get('/blogs',async(req,res)=>{
     try {
@@ -123,6 +124,7 @@ router.post('/blog',upload.single('image'),authenticate,validateBlog,async (req,
             comments: []
         })
         await newBlog.save();
+        res.send({success:true,message:'blog saved'});
     } catch (error) {
         res.send({
             success: false,
@@ -132,40 +134,44 @@ router.post('/blog',upload.single('image'),authenticate,validateBlog,async (req,
 })
 
 
-router.put('/blog/:id',upload.single('image'),authenticate,validateBlog,async (req,res)=>{
+router.patch('/blog/:id',upload.single('image'),authenticate,validateBlog,async (req,res)=>{
     try {
         const blogPost = await blog.findById(req.params.id);
+        const authorId = new mongoose.Types.ObjectId(req.body.author);
         if(blogPost){
-            if(req.body.author !== blog.author){
+            if(authorId.equals(blogPost.author)===false){
                 res.send({success: false,message: 'Unauthorized access'});
                 return;
             }
-            const imgName = req.file.filename;
+            let imgName;
+            if(req.file){
+                imgName = req.file.filename;
+            }
+            else{
+                imgName = blogPost.imageName;
+            }
             const prevImageName = blogPost.imageName;
             if(imgName!==prevImageName){
-                try{
-                    await fs.unlink(path.join(__dirname,'uploads',prevImageName));
-                }
-                catch(error){
-                    console.log('Image file could not be deleted');
-                }
+                fs.unlinkSync(path.join(__dirname,'..','uploads',prevImageName));
             }
-            const { title,content,category } = req.body
+            const { title,content } = req.body
             const updatedBlog = new blog({
+                _id: blogPost._id,
                 title,
                 content,
-                category,
+                category:blogPost.category,
                 author: blogPost.author,
                 imageName: imgName,
                 comments: [...blogPost.comments]
             })
             await blog.updateOne({_id: req.params.id},updatedBlog);
+            res.send({success: true,message: 'Blog updated successfully'});
         }
         else{
-            res.status(500).send({success:false,message:'Something went wrong...'});
+            res.send({success:false,message:'Something went wrong...'});
         }
     } catch (error) {
-        res.status(500).send({
+        res.send({
             success: false,
             message: 'Something went wrong...'
         })
@@ -175,29 +181,28 @@ router.put('/blog/:id',upload.single('image'),authenticate,validateBlog,async (r
 router.delete('/blog/:id',authenticate,async (req,res)=>{
     try {
         const blogToDelete = await blog.findById(req.params.id);
-        if(req.body.author!==blogToDelete._id){
+        const authorId = new mongoose.Types.ObjectId(req.body.author);
+        if(authorId.equals(blogToDelete.author)===false){
             res.send({success: false,message:'Unauthorized access'});
             return;
         }
-        const deletedBlog = await blog.findByIdAndDelete(req.params.id);
+        const deletedBlog = await blog.findOneAndDelete({_id: blogToDelete._id});
         const imgName = deletedBlog.imageName;
-        try {
-            await fs.unlink(path.join(__dirname,'uploads',imgName));
-        } catch (error) {
-            res.send(error.message);
+        if(imgName!=='NoImage.jpg'){
+            fs.unlinkSync(path.join(__dirname,'..','uploads',imgName));
         }
         const commentsToDelete = deletedBlog.comments;
         commentsToDelete.map(async(comm)=>{
             await comment.findByIdAndDelete(comm._id);
         })
-        res.status(200).json({
+        res.status(200).send({
             success: true,
             message: 'Blog post deleted successfully.'
         })
     } catch (error) {
-        res.status(500).json({
+        res.status(500).send({
             success: false,
-            message: 'Something went wrong...'
+            message: error.message || 'Something went wrong...'
         })
     }
 })
@@ -215,29 +220,29 @@ router.post('/blog/:id/comment',authenticate, validateComment ,async (req,res)=>
         })
         const savedComment = await newComment.save();
         blogPost.comments.unshift(savedComment._id);
-        res.status(200).json({
+        res.status(200).send({
             success: true,
             message: 'Comment added to the post seccessfully'
         })
     } catch (error) {
-        res.status(500).json({
+        res.status(500).send({
             success: false,
             message: 'An error occured while posting the comment'
         })
     }
 })
 
-router.put('/blog/:blogId/comment/:id',authenticate,validateComment,async(req,res)=>{
+router.patch('/blog/:blogId/comment/:id',authenticate,validateComment,async(req,res)=>{
     try{
         const { userComment } = req.body;
         await comment.findByIdAndUpdate(req.params.id,userComment);
-        res.status(200).json({
+        res.status(200).send({
             success: true,
             message: 'Comment updated successfully.'
         })
     }
     catch(error){
-        res.status(500).json({
+        res.status(500).send({
             success: false,
             message: 'Comment could not be updated.'
         })
@@ -249,12 +254,12 @@ router.delete('/blog/:blogId/comment/:id',authenticate,async(req,res)=>{
         const deletedComment = await comment.findByIdAndDelete(req.params.id);
         const deletedId = deletedComment._id;
         await blog.updateOne({ _id: req.params.blogId }, { $pull: { comments: { _id: deletedId } } });
-        res.status(201).json({
+        res.status(201).send({
             success: true,
             message: 'Comment deleted successfully.'
         })
     } catch (error) {
-        res.status(500).json({
+        res.status(500).send({
             success:false,
             message: 'The comment could not be deleted.'
         })
