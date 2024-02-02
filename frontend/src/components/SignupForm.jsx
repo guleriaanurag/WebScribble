@@ -2,18 +2,38 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import { validateEmail, validatePassword } from "../assets/validationAndSanitization";
+import { useContext } from "react";
+import { AuthenticationContext } from "../store/AuthenticationContext";
 
 export default function SignupForm(){
 
     const navigate = useNavigate();
+    const { authenticateUser } = useContext(AuthenticationContext);
 
     async function handleSignUp(e){
         e.preventDefault();
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
+        if(validateEmail(data.email)===false){
+            toast.error('Invalid email address',{
+                theme:'colored',
+                pauseOnHover: false,
+                closeOnClick: true
+            })
+        }
+        if(validatePassword(data.password)===false){
+            toast.error('Password length should be more than 8 characters',{
+                theme:'colored',
+                closeOnClick: true,
+                pauseOnHover: false
+            })
+            return;
+        }
         const response = await axios.post(import.meta.env.VITE_BACKEND_URL+'signup',data);
         if(response.data && response.data.token){
             Cookies.set('authToken',response.data.token,{secure:true,expires: 24});
+            authenticateUser();
             toast.success('User registered',{
                 autoClose: 5000,
                 hideProgressBar: false,

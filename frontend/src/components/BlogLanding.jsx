@@ -2,7 +2,7 @@ import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify'
-
+import { sanitizeBlog } from "../assets/validationAndSanitization";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { MdOutlineEdit } from 'react-icons/md'
@@ -11,6 +11,7 @@ import { AuthenticationContext } from "../store/AuthenticationContext";
 export default function BlogLandingPage(){
     const data = useLoaderData();
 
+    const sanitizedContent = sanitizeBlog(data.content);
     const {isAuthenticated} = useContext(AuthenticationContext);
     const[isEditable,setIsEditable] = useState(false);
     const navigate = useNavigate();
@@ -72,7 +73,7 @@ export default function BlogLandingPage(){
                 </div>
             )}
             <img src={`${import.meta.env.VITE_BACKEND_URL}image/${data.imageName}`} alt={data.title} className="w-[80%] h-[80%] object-contain max-lg:object-fill max-md:w-[90%] max-md:h-[70%]"/>
-            <div className="blog-content mt-10 px-40 max-lg:px-5" dangerouslySetInnerHTML={{__html: data.content}}></div>
+            <div className="blog-content mt-10 px-40 max-lg:px-5" dangerouslySetInnerHTML={{__html: sanitizedContent}}></div>
         </div>
     );
 }

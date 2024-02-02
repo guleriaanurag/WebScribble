@@ -1,23 +1,9 @@
 import { Link, useLoaderData } from "react-router-dom";
 import axios from 'axios';
 import BlogCard from "../components/BlogCard";
-import { useContext,useEffect } from "react";
-import { AuthenticationContext } from "../store/AuthenticationContext";
-import Cookies from "js-cookie";
 
 export default function Blogs(){
     const {data} = useLoaderData();
-
-    const { authenticateUser } = useContext(AuthenticationContext);
-    useEffect(()=>{
-        async function authenticateFromCookie(){
-            const cookie = Cookies.get('authToken');
-            if(cookie!==undefined){
-                authenticateUser();
-            }
-        }
-        authenticateFromCookie();
-    },[authenticateUser])
 
     return(
         <div>
