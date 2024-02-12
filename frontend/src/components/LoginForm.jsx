@@ -1,5 +1,5 @@
 import { toast } from 'react-toastify'
-import { Link, useNavigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import { validateEmail, validatePassword } from '../assets/validationAndSanitization';
@@ -8,7 +8,7 @@ import { AuthenticationContext } from '../store/AuthenticationContext';
 
 export default function LoginForm(){
 
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const { authenticateUser } = useContext(AuthenticationContext);
 
     async function handleSubmit(e){
@@ -46,7 +46,7 @@ export default function LoginForm(){
             authenticateUser();
             toast.success('Logged in successfully', {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 3000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: false,
@@ -54,7 +54,12 @@ export default function LoginForm(){
                 theme: "colored",
             });
         }
-        navigate(-1);
+        if(window.location.pathname!=='/login'){
+            navigate(-1);
+        }
+        else{
+            navigate('/blogs');
+        }
     }
 
     return(
