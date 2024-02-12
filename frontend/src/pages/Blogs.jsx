@@ -26,7 +26,6 @@ export default function Blogs() {
 
 export async function loader(){
     const url = import.meta.env.VITE_BACKEND_URL;
-    console.log('loader called');
     const myPromise = new Promise((resolve)=>
         axios.get(url+'blogs')
         .then((res)=> resolve(res.data))
