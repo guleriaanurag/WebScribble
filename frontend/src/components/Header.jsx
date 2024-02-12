@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Link} from "react-router-dom";
 import { AuthenticationContext } from "../store/AuthenticationContext";
 import Cookies from "js-cookie";
@@ -7,7 +7,13 @@ import Headroom from 'react-headroom'
 
 export default function Header(){
 
-    const {isAuthenticated,logoutUser} = useContext(AuthenticationContext);
+    const {isAuthenticated,authenticateUser,logoutUser} = useContext(AuthenticationContext);
+
+    useEffect(()=>{
+        if(Cookies.get('authToken')!==undefined){
+            authenticateUser();
+        }
+    },[authenticateUser])
 
     function handleLogout(){
         Cookies.remove('authToken');
