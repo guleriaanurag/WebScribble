@@ -37,8 +37,8 @@ export async function loader(){
         error: 'There was an error fetching the blogs'
     },{
         pauseOnHover: false,
-        closeOnClick: true
+        closeOnClick: true,
+        autoClose:1500
     })
-    const response = await axios.get(url+'blogs');
-    return response.data;
+    return myPromise;
 }
