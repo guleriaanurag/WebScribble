@@ -1,14 +1,14 @@
 import { useParams,useLoaderData, Link } from "react-router-dom";
 import axios from 'axios';
 import BlogCard from "../components/BlogCard";
+import { toast } from "react-toastify";
 
 export default function CategoryBlogs(){
     const data = useLoaderData();
-    const { category } = useParams();
 
     return(
         <>
-            <h3 className="heading text-3xl p-4 text-center">{category} Blogs</h3>
+            <h3 className="heading text-3xl p-4 text-center"> Blogs</h3>
             {data.length <= 0 && (
                 <>
                     <p className="text-center mt-24">No blogs available</p>
@@ -26,6 +26,19 @@ export default function CategoryBlogs(){
 
 export async function loader({params}){
     const url = import.meta.env.VITE_BACKEND_URL;
-    const response = await axios.get(url+`blogs/${params.category}`);
-    return response.data.data;
+    const myPromise = new Promise((resolve,reject)=>{
+        axios.get(url+`blogs/${params.category}`)
+        .then((res)=>resolve(res.data.data || []))
+        .catch((err)=>reject(err))
+    })
+    await toast.promise(myPromise,{
+        pending: 'Please wait, while we fetch the blogs',
+        success: 'Success',
+        error: 'There was an error fetching the blogs'
+    },{
+        pauseOnHover: false,
+        closeOnClick: true,
+        autoClose:1500
+    })
+    return myPromise;
 }   

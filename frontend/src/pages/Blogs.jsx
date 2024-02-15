@@ -32,8 +32,8 @@ export async function loader(){
         .catch((err)=>resolve(err))
     );
     await toast.promise(myPromise,{
-        pending: 'Fetching Blogs Data',
-        success: 'Blogs Found',
+        pending: 'Please wait, while we fetch the blogs',
+        success: 'Success',
         error: 'There was an error fetching the blogs'
     },{
         pauseOnHover: false,

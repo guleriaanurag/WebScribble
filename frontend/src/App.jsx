@@ -12,6 +12,7 @@ import SignupForm from './components/SignupForm'
 import LoginForm from './components/LoginForm';
 import BlogLandingPage , {loader as blogLandingLoader} from './components/BlogLanding';
 import EditBlogForm from './components/EditBlogForm';
+import { toast } from 'react-toastify';
 
 function App() {
 
@@ -31,12 +32,12 @@ function App() {
             {
               index: true,
               loader: blogLoader,
-              element: <Blogs />
+              element: <Blogs />,
             },
             {
               path: ':category',
               element: <CategoryBlogs />,
-              loader: categoryBlogLoader
+              loader: categoryBlogLoader,
             },
             {
               path: 'post',
