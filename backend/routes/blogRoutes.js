@@ -3,7 +3,7 @@ const router = express.Router();
 const upload = require('../multer');
 const fs = require('fs');
 const { authenticate } = require('../authentication');
-const { validateBlog,validateComment } = require('../validationAndSantization');
+const { validateBlog,validateComment,sanitizeContent } = require('../validationAndSantization');
 const blog = require('../models/blog');
 const comment = require('../models/comment');
 const path = require('path');
@@ -22,7 +22,7 @@ router.get('/blogs',async(req,res)=>{
         else{
             res.send({
                 success: false,
-                message: 'Blogs not found.'
+                message: 'No Blogs Found.'
             })
         }
     } catch (error) {
@@ -35,9 +35,9 @@ router.get('/blogs',async(req,res)=>{
 
 router.get('/blogs/:category',async (req,res)=>{
     try {
-        const category = req.params.category || 'All'
+        const category = req.params.category
         const blogs = await blog.find({category}).populate('author').limit(25);
-        if(blogs){
+        if(blogs.length>0){
             res.send({
                 success: true,
                 data: blogs,
@@ -109,6 +109,7 @@ router.post('/blog',upload.single('image'),authenticate,validateBlog,async (req,
             imgName = 'NoImage.jpg'
         }
         const {title,content,category,author} = req.body
+        const sanitizedContent = sanitizeContent(content);
         if(!allowedCategories.includes(category)){
             res.send({success:false,message:'Inavlid blog category'});
             fs.unlink(path.join(__dirname,'..','uploads',imgName));
@@ -116,7 +117,7 @@ router.post('/blog',upload.single('image'),authenticate,validateBlog,async (req,
         }
         const newBlog = new blog({
             title,
-            content,
+            content:sanitizedContent,
             author,
             category,
             imageName: imgName,

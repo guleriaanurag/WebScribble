@@ -24,6 +24,7 @@ app.use(cors());
 app.use(userRouter);
 app.use(blogRouter);
 
+
 app.listen(port,(err)=>{
     if(err){
         console.log('Error in server setup');
@@ -35,15 +36,6 @@ app.listen(port,(err)=>{
 app.get('/',(req,res)=>{
     res.send('Web scribles backend');
 })
-
-// app.get('/image/:imageName',(req,res)=>{
-//     try {
-//         const imagepath = path.join(__dirname,'uploads',req.params.imageName);
-//         res.sendFile(imagepath);
-//     } catch (error) {
-//         res.sendFile(path.join(__dirname,'uploads','NoImage.jpg'));
-//     }
-// })
 
 app.get('/image/:imageName', async (req, res) => {
     try {
