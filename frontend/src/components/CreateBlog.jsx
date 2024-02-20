@@ -1,7 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useContext, useState , useEffect } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthenticationContext } from "../store/AuthenticationContext";
 import { toast } from 'react-toastify';
 import ReactQuill from 'react-quill';
@@ -69,52 +69,21 @@ export default function CreateBlog() {
                 <input type='file' name="image" id="image" accept='image/*' className="max-md:h-10"/>
                 <label className="text-stone-100">Content:</label>
                 <ReactQuill theme="snow" modules={module}  value={value} onChange={setValue} placeholder="Content..." className="bg-slate-100 h-[40%] max-md:h-[33%]"></ReactQuill><br />
-                <label htmlFor="category" className="text-stone-100 mt-auto max-lg:mt-[10%]">Category:</label>
-                <select name="category" id="category" className="rounded-lg outline-none pl-1 py-1">
-                    <option value="Category:" disabled></option>
-                    <option value="All">All</option>
-                    <option value="Science">Science</option>
-                    <option value="Music">Music</option>
-                    <option value="Games">Games</option>
-                    <option value="Fiction">Fiction</option>
-                    <option value="Technology">Technology</option>
-                    <option value="Programming">Programming</option>
-                </select>
+                <div>
+                    <label htmlFor="category" className="text-stone-100 mt-auto max-lg:mt-[10%]">Category:</label>
+                    <select name="category" id="category" className="rounded-lg outline-none pl-1 py-1">
+                        <option value="Category:" disabled></option>
+                        <option value="All">All</option>
+                        <option value="Science">Science</option>
+                        <option value="Music">Music</option>
+                        <option value="Games">Games</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Programming">Programming</option>
+                    </select>
+                </div>
                 <button className="p-1 mt-2 w-[15%] mx-auto rounded-lg bg-slate-200 text-slate-800 hover:bg-slate-400 max-md:w-[35%]" disabled={!isAuthenticated}>Post</button>
             </form>
         </div>
     );
-}
-
-export async function action({ request }) {
-    // const formData = await request.formData();
-    // let data = Object.fromEntries(formData.entries());
-    // data = { ...data, author: '' };
-    // const cookie = Cookies.get('authToken');
-    // const response = await axios.post(import.meta.env.VITE_BACKEND_URL + 'blog', data, {
-    //     headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //         'Authorization': `Bearer ${cookie}`
-    //     }
-    // })
-    // if (response.data.success === true) {
-    //     toast.success('The blog is posted', {
-    //         theme: 'colored',
-    //         pauseOnHover: false,
-    //         closeOnClick: true,
-    //         autoClose: true,
-    //         progress: undefined
-    //     })
-    // }
-    // else {
-    //     toast.error(response.data.message || 'An error occured while posting the blog', {
-    //         theme: 'colored',
-    //         pauseOnHover: false,
-    //         closeOnClick: true,
-    //         autoClose: true,
-    //         progress: undefined
-    //     });
-    // }
-    console.log(request);
-    return redirect('..');
 }
