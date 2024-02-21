@@ -1,4 +1,4 @@
-import { useParams,useLoaderData, Link } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 import axios from 'axios';
 import BlogCard from "../components/BlogCard";
 import { toast } from "react-toastify";
