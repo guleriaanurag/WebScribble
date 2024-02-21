@@ -3,16 +3,18 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { validateEmail, validatePassword } from "../assets/validationAndSanitization";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthenticationContext } from "../store/AuthenticationContext";
 
 export default function SignupForm(){
 
+    const { authenticateUser,isAuthenticated } = useContext(AuthenticationContext);
+    const [btnDisabled,setBtnDisabled] = useState(isAuthenticated);
     const navigate = useNavigate();
-    const { authenticateUser } = useContext(AuthenticationContext);
 
     async function handleSignUp(e){
         e.preventDefault();
+        setBtnDisabled(true);
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData.entries());
         if(validateEmail(data.email)===false){
@@ -66,8 +68,8 @@ export default function SignupForm(){
                 <label htmlFor="password">Password:</label>
                 <input type="password" name="password" id="password" className="p-1 bg-slate-300"/>
                 <div className="flex">
-                    <button type="button" className="bg-stone-800 text-stone-100 mt-6 w-[20%] mx-auto p-4 rounded-lg max-md:w-[40%]"><Link to='/'>Cancel</Link></button>
-                    <button className="bg-stone-800 text-stone-100 mt-6 w-[20%] mx-auto p-4 rounded-lg max-md:w-[40%]">Register</button>
+                    <button type="button" className="bg-stone-800 text-stone-100 mt-6 w-[20%] mx-auto p-4 rounded-lg max-md:w-[40%]" disabled={btnDisabled}><Link to='/'>Cancel</Link></button>
+                    <button className="bg-stone-800 text-stone-100 mt-6 w-[20%] mx-auto p-4 rounded-lg max-md:w-[40%]" disabled={btnDisabled}>Register</button>
                 </div>
             </form>
         </div>

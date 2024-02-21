@@ -7,11 +7,11 @@ import { useContext, useState } from 'react';
 import { AuthenticationContext } from '../store/AuthenticationContext';
 
 export default function LoginForm(){
-
-    const[btnDisabled,setBtnDisabled] = useState(false);
+    
+    const { authenticateUser, isAuthenticated } = useContext(AuthenticationContext);
+    const[btnDisabled,setBtnDisabled] = useState(isAuthenticated);
 
     const navigate = useNavigate()
-    const { authenticateUser } = useContext(AuthenticationContext);
 
     async function handleSubmit(e){
         e.preventDefault();
