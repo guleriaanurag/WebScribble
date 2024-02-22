@@ -50,22 +50,24 @@ function validateBlog(req,res,next){
                 success: false,
                 message: 'Title missing.'
             })
+            return;
         }
         if(!content){
             res.send({
                 success: false,
                 message: 'Content missing.'
             })
+            return;
         }
         if(typeof title !== 'string' && typeof content !== 'string'){
             res.send({
                 success: false,
                 message: 'String datatype should be used for title and content.'
             })
+            return;
         }
         next();
     } catch (error) {
-        console.log(error);
         res.send({
             success: false,
             message: 'An error occured...'

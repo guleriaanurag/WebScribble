@@ -12,7 +12,7 @@ const { default: mongoose } = require('mongoose');
 router.get('/blogs',async(req,res)=>{
     try {
         const blogs = await blog.find().populate({path: 'author',select:'-password'}).limit(25);
-        if(blogs){
+        if(blogs.length>0){
             res.send({
                 success: true,
                 data: blogs,
@@ -36,12 +36,12 @@ router.get('/blogs',async(req,res)=>{
 router.get('/blogs/:category',async (req,res)=>{
     try {
         const category = req.params.category
-        const blogs = await blog.find({category}).populate('author').limit(25);
+        const blogs = await blog.find({category}).populate({path:'author',select:'-password'}).limit(25);
         if(blogs.length>0){
             res.send({
                 success: true,
                 data: blogs,
-                message: 'Categorised Blogs found.'
+                message: 'Blogs found.'
             });
         }
         else{
