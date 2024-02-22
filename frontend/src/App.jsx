@@ -12,6 +12,8 @@ import SignupForm from './components/SignupForm'
 import LoginForm from './components/LoginForm';
 import BlogLandingPage , {loader as blogLandingLoader} from './components/BlogLanding';
 import EditBlogForm from './components/EditBlogForm';
+import { Flip, toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 function App() {
 
@@ -71,6 +73,17 @@ function App() {
       ]
     } 
   ])
+
+  useEffect(()=>{
+    toast.info('The server may take some time to respond. Please wait patiently 😊',{
+      position: 'top-center',
+      theme:'colored',
+      autoClose: 4000,
+      pauseOnHover: false,
+      closeOnClick: true,
+      transition: Flip
+    })
+  })
 
   return(
     <AuthenticationContextProvider>
