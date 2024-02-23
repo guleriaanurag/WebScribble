@@ -33,7 +33,7 @@ export async function loader({params}){
     })
     await toast.promise(myPromise,{
         pending: 'Please wait, while we fetch the blogs',
-        success: 'Success',
+        success: null,
         error: 'There was an error fetching the blogs'
     },{
         pauseOnHover: false,
