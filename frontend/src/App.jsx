@@ -7,11 +7,11 @@ import BlogsLayout from './pages/BlogsLayout'
 import CategoryBlogs, {loader as categoryBlogLoader} from './pages/CategoryBlogs';
 import './App.css'
 import Blogs,{loader as blogLoader} from './pages/Blogs';
-import CreateBlog from './components/CreateBlog';
-import SignupForm from './components/SignupForm'
-import LoginForm from './components/LoginForm';
+import CreateBlog from './pages/CreateBlog';
+import SignupForm from './pages/SignupForm'
+import LoginForm from './pages/LoginForm';
 import BlogLandingPage , {loader as blogLandingLoader} from './components/BlogLanding';
-import EditBlogForm from './components/EditBlogForm';
+import EditBlogForm from './pages/EditBlogForm';
 import { Flip, toast } from 'react-toastify';
 import { useEffect } from 'react';
 
