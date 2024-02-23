@@ -4,8 +4,7 @@ import BlogCard from "../components/BlogCard";
 import { toast } from 'react-toastify';
 
 export default function Blogs() {
-    const { data } = useLoaderData();
-
+    const data = useLoaderData();
     return (
         <div>
             <h3 className="heading text-3xl p-4 text-center">Blogs</h3>
@@ -26,10 +25,10 @@ export default function Blogs() {
 
 export async function loader(){
     const url = import.meta.env.VITE_BACKEND_URL;
-    const myPromise = new Promise((resolve)=>
+    const myPromise = new Promise((resolve,reject)=>
         axios.get(url+'blogs')
-        .then((res)=> resolve(res.data))
-        .catch((err)=>resolve(err))
+        .then((res)=> resolve(res.data.data || []))
+        .catch((err)=>reject(err))
     );
     await toast.promise(myPromise,{
         pending: 'Please wait, while we fetch the blogs',
