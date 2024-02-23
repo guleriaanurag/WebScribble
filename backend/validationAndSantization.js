@@ -2,7 +2,7 @@ const createDOMPurify = require('dompurify');
 const { JSDOM } = require('jsdom');
 
 function sanitizeContent(blog){
-    const window = new JSDOM('').window();
+    const window = new JSDOM('').window;
     const DOMPurify = createDOMPurify(window);
     const clean = DOMPurify.sanitize(blog);
     return clean;
