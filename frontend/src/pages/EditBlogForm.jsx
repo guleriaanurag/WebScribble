@@ -69,7 +69,7 @@ export default function EditBlogForm() {
             method="PATCH"
             onSubmit={handleBlogUpdation}
             encType="multipart/form-data"
-            className="bg-slate-700 flex flex-col p-7 h-[70%] w-[90%] gap-3 rounded-lg max-lg:w-[90%]"
+            className="bg-slate-700 flex flex-col p-7 h-auto w-[90%] gap-3 rounded-lg max-lg:w-[90%]"
         >
             <label htmlFor="title" className="text-stone-100">
                 Title:
@@ -96,7 +96,7 @@ export default function EditBlogForm() {
                 className="bg-slate-100 max-h-[50%] whitespace-pre-line overflow-scroll hide-scroll"
             ></ReactQuill>
             <button
-                className="p-1 w-[20%] mx-auto mt-auto rounded-lg bg-slate-200 text-slate-800 hover:bg-slate-400 max-md:w-[30%]"
+                className="p-1 w-[20%] m-auto rounded-lg bg-slate-200 text-slate-800 hover:bg-slate-400 max-md:w-[30%]"
                 disabled={btnDisabled}
             >
             Update
