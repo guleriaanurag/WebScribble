@@ -1,7 +1,7 @@
 import { useLoaderData, Link } from "react-router-dom";
 import axios from 'axios';
 import BlogCard from "../components/BlogCard";
-import { toast } from "react-toastify";
+import { Flip , toast } from "react-toastify";
 
 export default function CategoryBlogs(){
     const data = useLoaderData();
@@ -38,7 +38,8 @@ export async function loader({params}){
     },{
         pauseOnHover: false,
         closeOnClick: true,
-        autoClose:1500
+        autoClose:1500,
+        theme: Flip
     })
     return myPromise;
 }   

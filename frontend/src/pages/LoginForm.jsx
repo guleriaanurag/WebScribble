@@ -73,7 +73,7 @@ export default function LoginForm() {
         <form
             method="post"
             onSubmit={handleSubmit}
-            className="bg-slate-100 flex flex-col h-[40%] w-[40%] p-8 rounded-lg max-lg:h-[38%] max-lg:w-[90%] max-lg:p-3"
+            className="bg-slate-100 flex flex-col h-auto w-[40%] p-8 rounded-lg max-lg:w-[90%] max-lg:p-3"
         >
             <label htmlFor="email">Email:</label>
             <input

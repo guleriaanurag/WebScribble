@@ -70,7 +70,7 @@ export default function SignupForm() {
             <form
                 method="post"
                 onSubmit={handleSignUp}
-                className="bg-slate-100 flex flex-col h-[45%] w-[40%] p-8 rounded-lg max-lg:h-[45%] max-lg:w-[90%]"
+                className="bg-slate-100 flex flex-col h-auto w-[40%] p-8 rounded-lg max-lg:w-[90%]"
             >
                 <label htmlFor="name" required>
                 Name:
