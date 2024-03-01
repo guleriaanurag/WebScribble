@@ -189,7 +189,7 @@ router.delete('/blog/:id',authenticate,async (req,res)=>{
         const deletedBlog = await blog.findOneAndDelete({_id: blogToDelete._id});
         const imgName = deletedBlog.imageName;
         if(imgName!=='NoImage.jpg'){
-            fs.unlinkSync(path.join(__dirname,'..','uploads',imgName));
+            fs.unlink(path.join(__dirname,'..','uploads',imgName));
         }
         const commentsToDelete = deletedBlog.comments;
         commentsToDelete.map(async(comm)=>{
@@ -202,7 +202,7 @@ router.delete('/blog/:id',authenticate,async (req,res)=>{
     } catch (error) {
         res.send({
             success: false,
-            message: error.message || 'Something went wrong...'
+            message: 'Something went wrong...'
         })
     }
 })
