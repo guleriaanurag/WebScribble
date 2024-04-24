@@ -1,10 +1,15 @@
+// package imports
 import { Link, useLoaderData } from "react-router-dom";
 import axios from 'axios';
-import BlogCard from "../components/BlogCard";
 import { Flip, toast } from 'react-toastify';
 
+//  project file imports
+import BlogCard from "../components/BlogCard";
+
 export default function Blogs() {
+    
     const data = useLoaderData();
+    
     return (
         <div>
             <h3 className="heading text-3xl p-4 text-center">Blogs</h3>
@@ -14,7 +19,7 @@ export default function Blogs() {
                     <p className="text-center"><Link to='post' className="text-sky-600 underline animate-pulse">Would you like to contribute</Link></p>
                 </>
             )}
-            <div className="grid grid-cols-4 px-10 mt-6 pb-6 max-lg:grid-cols-2 max-md:grid-cols-1 max-md:px-3">
+            <div className="grid grid-cols-3 px-10 mt-6 pb-6 max-lg:grid-cols-2 max-md:grid-cols-1 max-md:px-3">
                 {data.map((d) => {
                     return <BlogCard key={d._id} data={d} />
                 })}

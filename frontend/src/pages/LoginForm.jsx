@@ -1,15 +1,22 @@
-import { toast } from "react-toastify";
+import { useContext, useState } from "react";
+
+// package imports
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import axios from "axios";
+
+// project file imports
 import { validateEmail, validatePassword } from "../assets/validationAndSanitization";
-import { useContext, useState } from "react";
 import { AuthenticationContext } from "../store/AuthenticationContext";
 
 export default function LoginForm() {
     const { authenticateUser, isAuthenticated } = useContext(
         AuthenticationContext
     );
+
+    // state used to disable the btn when the form is in submission state
+    
     const [btnDisabled, setBtnDisabled] = useState(isAuthenticated);
 
     const navigate = useNavigate();
@@ -18,7 +25,19 @@ export default function LoginForm() {
         e.preventDefault();
         setBtnDisabled(true);
         const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
+        let data = Object.fromEntries(formData.entries());
+
+        // we spread and mutate the data according to the checkbox input , i.e. the user wants the server to remember the token created for a longer period
+
+        if(data.rememberMe){
+            data = {...data,rememberMe: true};
+        }
+        else{
+            data = {...data,rememberMe: false};
+        }
+
+        // Validation logic below, the email and password are validated before sending them to the server
+        
         if (validateEmail(data.email) === false) {
         toast.error("Invalid email address", {
             theme: "colored",
@@ -39,20 +58,38 @@ export default function LoginForm() {
         import.meta.env.VITE_BACKEND_URL + "login",
         data
         );
+
+        // We check if the login was a success if not then we provide error feedback
+        
         if (response.data.success === false) {
-        toast.error(response.data.message, {
-            pauseOnHover: false,
-            autoClose: 4000,
-            hideProgressBar: false,
-            theme: "colored",
-            closeOnClick: true,
-        });
+            toast.error(response.data.message, {
+                pauseOnHover: false,
+                autoClose: 4000,
+                hideProgressBar: false,
+                theme: "colored",
+                closeOnClick: true,
+            });
         }
+
+        // The cookie expiration date is set according to the users selection
+        // If the user selects to be remembered by the server the cookie is stored for a longer period
+        
         if (response.data && response.data.token) {
-        Cookies.set("authToken", response.data.token, {
-            secure: true,
-            expires: 1,
-        });
+            if(data.rememberMe === true){
+                Cookies.set("authToken",response.data.token,{
+                    secure: true,
+                    expires: 30
+                })
+            }
+            else{
+                Cookies.set("authToken", response.data.token, {
+                    secure: true,
+                    expires: 1,
+                });
+            }
+
+        // context function used to maintain an authentication state
+        
         authenticateUser();
         toast.success("Logged in successfully", {
             position: "top-right",
@@ -90,14 +127,12 @@ export default function LoginForm() {
             id="password"
             className="py-1 pl-2 bg-slate-300 rounded-md"
             />
-            <Link
-            to="/"
-            className="right-0 text-lg mt-2 transition-colors duration-500 hover:text-sky-500"
-            >
-            Forgot Password?
-            </Link>
+            <div className="flex items-center gap-2 py-3">
+                <input type="checkbox" name="rememberMe" className="w-4 h-4 cursor-pointer"/>
+                <label htmlFor="rememberMe">Remember Me</label>
+            </div>
             <button
-            className="bg-stone-800 text-stone-100 mt-6 w-[20%] mx-auto p-4 rounded-lg max-md:w-24"
+            className="bg-stone-800 text-stone-100 my-2 w-[20%] mx-auto p-4 rounded-lg max-md:w-24"
             disabled={btnDisabled}
             >
             Login

@@ -1,10 +1,14 @@
+import { useState, useEffect, useContext } from "react";
+
+// package imports
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+
+// project file imports
 import module from "../assets/toolbarOptions";
 import { AuthenticationContext } from "../store/AuthenticationContext";
 
@@ -12,10 +16,15 @@ export default function CreateBlog() {
     
     const { isAuthenticated } = useContext(AuthenticationContext);
     
+    // state for storing value for react-quill
     const [value, setValue] = useState("");
+    
+    // state for disabling form button if not authenticated or in submission state
     const [btnDisabled, setBtnDisabled] = useState(!isAuthenticated);
     const navigate = useNavigate();
 
+    // A check to see if the user is logged in
+    // If not the user is sent to the login page
     useEffect(() => {
         if (Cookies.get("authToken") === undefined) {
             toast.error("You need to login first", {
@@ -29,11 +38,15 @@ export default function CreateBlog() {
         }
     }, [navigate]);
 
+    // function to handle form submission 
     async function handleCreateBlog(e) {
         e.preventDefault();
         setBtnDisabled(true);
         const formData = new FormData(e.target);
         let data = Object.fromEntries(formData.entries());
+        
+        // the author field is added as the server checks and appends the value later
+        // the content is added because react-quill data is handled seperately
         data = { ...data, author: "", content: value };
         const cookie = Cookies.get("authToken");
         const response = await axios.post(
@@ -46,25 +59,28 @@ export default function CreateBlog() {
             },
         }
         );
+
+        // checking for server reponse and providing user feedback
         if (response.data.success === true) {
-        toast.success("The blog is posted", {
-            theme: "colored",
-            pauseOnHover: false,
-            closeOnClick: true,
-            autoClose: true,
-            progress: undefined,
-        });
-        } else {
-        toast.error(
-            response.data.message || "An error occured while posting the blog",
-            {
-            theme: "colored",
-            pauseOnHover: false,
-            closeOnClick: true,
-            autoClose: true,
-            progress: undefined,
-            }
-        );
+            toast.success("The blog is posted", {
+                theme: "colored",
+                pauseOnHover: false,
+                closeOnClick: true,
+                autoClose: true,
+                progress: undefined,
+            });
+        } 
+        else {
+            toast.error(
+                response.data.message || "An error occured while posting the blog",
+                {
+                theme: "colored",
+                pauseOnHover: false,
+                closeOnClick: true,
+                autoClose: true,
+                progress: undefined,
+                }
+            );
         }
         navigate("/blogs");
     }

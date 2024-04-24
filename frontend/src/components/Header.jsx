@@ -1,14 +1,20 @@
 import { useContext, useEffect } from "react";
+
+// package imports
 import { Link} from "react-router-dom";
-import { AuthenticationContext } from "../store/AuthenticationContext";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import Headroom from 'react-headroom'
+import Headroom from 'react-headroom';
+
+// project file imports
+import { AuthenticationContext } from "../store/AuthenticationContext";
 
 export default function Header(){
 
     const {isAuthenticated,authenticateUser,logoutUser} = useContext(AuthenticationContext);
 
+    // checking is user is logged in using a stored cookie
+    // to display login, logout button respectively
     useEffect(()=>{
         if(Cookies.get('authToken')!==undefined){
             authenticateUser();

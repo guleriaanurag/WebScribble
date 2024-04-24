@@ -1,19 +1,27 @@
-import { RouterProvider , createBrowserRouter } from 'react-router-dom';
+import { useEffect } from 'react';
+import './App.css'
 
+// package imports
+import { RouterProvider , createBrowserRouter } from 'react-router-dom';
+import { Flip, toast } from 'react-toastify';
+
+// context imports
 import AuthenticationContextProvider from './store/AuthenticationContext';
+import ModalContextProvider from './store/ModalContextProvider';
+
+// components import
 import HomePage from './pages/Home';
 import Introduction from './components/Introduction';
 import BlogsLayout from './pages/BlogsLayout'
 import CategoryBlogs, {loader as categoryBlogLoader} from './pages/CategoryBlogs';
-import './App.css'
 import Blogs,{loader as blogLoader} from './pages/Blogs';
 import CreateBlog from './pages/CreateBlog';
 import SignupForm from './pages/SignupForm'
 import LoginForm from './pages/LoginForm';
 import BlogLandingPage , {loader as blogLandingLoader} from './components/BlogLanding';
 import EditBlogForm from './pages/EditBlogForm';
-import { Flip, toast } from 'react-toastify';
-import { useEffect } from 'react';
+import CommentModal from './components/CommentModal';
+import PageNotFound from './pages/NotFound';
 
 function App() {
 
@@ -48,15 +56,19 @@ function App() {
               path: 'blog/:id',
               loader: blogLandingLoader,
               id: 'landing-loader',
-              children:[,
+              children:[
                 {
                   index: true,
                   element: <BlogLandingPage />,
-                  loader: blogLandingLoader
+                  loader: blogLandingLoader,
                 },
                 {
                   path: 'edit-blog',
                   element: <EditBlogForm />
+                },
+                {
+                  path: 'comment',
+                  element: <CommentModal />
                 }
               ]
             },
@@ -71,9 +83,14 @@ function App() {
           element: <LoginForm />
         }
       ]
-    } 
+    },
+    {
+      path: '*',
+      element: <PageNotFound />
+    }
   ])
 
+  // this toast is there because the server is deployed on a free tier service and takes a lot of inital time to start
   useEffect(()=>{
     toast.info('The server may take some time to respond. Please wait patiently 😊',{
       position: 'top-center',
@@ -87,8 +104,10 @@ function App() {
 
   return(
     <AuthenticationContextProvider>
-      <RouterProvider router={router}>
-      </RouterProvider>
+      <ModalContextProvider>
+        <RouterProvider router={router}>
+        </RouterProvider>
+      </ModalContextProvider>
     </AuthenticationContextProvider>
   );
 }

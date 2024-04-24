@@ -1,7 +1,10 @@
+// package imports
 import { useLoaderData, Link } from "react-router-dom";
 import axios from 'axios';
-import BlogCard from "../components/BlogCard";
 import { Flip , toast } from "react-toastify";
+
+// poject file imports
+import BlogCard from "../components/BlogCard";
 
 export default function CategoryBlogs(){
     const data = useLoaderData();

@@ -1,5 +1,9 @@
 import { useEffect } from "react";
+
+// package imports
 import { Outlet } from "react-router-dom"
+
+// project file imports
 import Menu from "../components/Menu";
 
 export default function BlogsLayout() {

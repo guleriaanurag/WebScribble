@@ -1,4 +1,7 @@
+// package imports
 import { Link } from "react-router-dom";
+
+// project file imports
 import img from '../assets/writing.gif';
 
 export default function Introduction() {

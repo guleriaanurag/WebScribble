@@ -1,18 +1,24 @@
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
+
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify'
-import { sanitizeBlog } from "../assets/validationAndSanitization";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { MdOutlineEdit } from 'react-icons/md'
+
+import PostInteraction from "./PostInteractions";
+import { sanitizeBlog } from "../assets/validationAndSanitization";
 import { AuthenticationContext } from "../store/AuthenticationContext";
+import CommentWrapper from "./CommentWrapper";
+import { ModalContext } from "../store/ModalContextProvider";
 
 export default function BlogLandingPage(){
     const data = useLoaderData();
 
     const sanitizedContent = sanitizeBlog(data.content);
     const {isAuthenticated} = useContext(AuthenticationContext);
+    const { commentModalState } = useContext(ModalContext);
     const[isEditable,setIsEditable] = useState(false);
     const navigate = useNavigate();
 
@@ -28,8 +34,8 @@ export default function BlogLandingPage(){
         if(id===data.author._id){
             setIsEditable(true);
         }
-    },[isAuthenticated])
-
+    },[isAuthenticated,commentModalState])
+    
     function handleDeleteBlog(){
         const confirmation = confirm('Are you sure ? This blog will be deleted permanently.')
         const deleteBlog = async()=>{
@@ -62,7 +68,7 @@ export default function BlogLandingPage(){
             deleteBlog();
         }
     }
-
+    
     return(
         <div className="h-full w-full px-6 flex flex-col items-center">
             <h1 className="heading text-center text-3xl p-4">{data.title}</h1>
@@ -74,6 +80,8 @@ export default function BlogLandingPage(){
             )}
             <img src={`${import.meta.env.VITE_BACKEND_URL}image/${data.imageName}`} alt={data.title} className="w-[80%] h-[80%] object-contain max-lg:object-fill max-md:w-[90%] max-md:h-[70%]"/>
             <div className="blog-content mt-10 px-40 max-lg:px-5" dangerouslySetInnerHTML={{__html: sanitizedContent}}></div>
+            <PostInteraction />
+            <CommentWrapper comments={data.comments}/>
         </div>
     );
 }
