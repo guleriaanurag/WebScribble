@@ -74,7 +74,6 @@ router.get('/blog/:id',async (req,res)=>{
                 select: '-password'
             }
         })
-
         if(response){
             res.send({
                 success: true,
@@ -213,18 +212,20 @@ router.post('/blog/:id/comment',authenticate, validateComment ,async (req,res)=>
         if(!blogPost){
             res.send({success: false,message:'Unable to add the comment'})
         }
-        const { userComment } = req.body;
+        const { userComment,author } = req.body;
         const newComment = new comment({
             userComment,
-            author: req.userId
+            author
         })
         const savedComment = await newComment.save();
         blogPost.comments.unshift(savedComment._id);
+        await blogPost.save();
         res.send({
             success: true,
             message: 'Comment added to the post seccessfully'
         })
     } catch (error) {
+        console.log(error);
         res.send({
             success: false,
             message: 'An error occured while posting the comment'

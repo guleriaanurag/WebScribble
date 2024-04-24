@@ -13,15 +13,16 @@ function authenticate(req,res,next){
             next();
         }
     } catch (error) {
-        res.stats(404).send({
+        res.send({
             success: false,
             message: 'Unauthorized access'
         })
     }
 }
 
-function createToken(id,name){
-    const token = jwt.sign({userId:id,name},process.env.TOKEN_SECRET,{algorithm: 'HS256',expiresIn: '1d'});
+function createToken(id,name,rememberMe){
+    const expiresIn = rememberMe ? '30d' : '1d'
+    const token = jwt.sign({userId:id,name},process.env.TOKEN_SECRET,{algorithm: 'HS256',expiresIn:expiresIn});
     return token;
 }
 

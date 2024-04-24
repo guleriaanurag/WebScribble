@@ -26,7 +26,7 @@ function validateComment(req,res,next){
             return;
         }
         const commentLength = userComment.trim().length;
-        if(commentLength > 5 || commentLength < 200){
+        if(commentLength < 5 || commentLength > 500){
             res.send({
                 success: false,
                 message: 'Comment length should be in betweem 5 to 200 characters.'
