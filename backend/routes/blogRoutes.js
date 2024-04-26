@@ -2,12 +2,16 @@ const express = require('express');
 const router = express.Router();
 const upload = require('../multer');
 const fs = require('fs');
-const { authenticate } = require('../authentication');
-const { validateBlog,validateComment,sanitizeContent } = require('../validationAndSantization');
-const blog = require('../models/blog');
-const comment = require('../models/comment');
 const path = require('path');
 const { default: mongoose } = require('mongoose');
+
+// middleware imports
+const { authenticate } = require('../authentication');
+const { validateBlog,validateComment,sanitizeContent } = require('../validationAndSantization');
+
+// model imports
+const blog = require('../models/blog');
+const comment = require('../models/comment');
 
 router.get('/blogs',async(req,res)=>{
     try {
@@ -206,6 +210,20 @@ router.delete('/blog/:id',authenticate,async (req,res)=>{
     }
 })
 
+router.get('/fetch-comment/:id',authenticate,async(req,res)=>{
+    try {
+        const fetchedComment = await comment.findById(req.params.id);
+        if(fetchedComment){
+            res.send(fetchedComment);
+        }
+        else{
+            throw Error('An error occured');
+        }
+    } catch (error) {
+        res.send(error.message);
+    }
+})
+
 router.post('/blog/:id/comment',authenticate, validateComment ,async (req,res)=>{
     try {
         const blogPost = await blog.findById(req.params.id);
@@ -236,7 +254,7 @@ router.post('/blog/:id/comment',authenticate, validateComment ,async (req,res)=>
 router.patch('/blog/:blogId/comment/:id',authenticate,validateComment,async(req,res)=>{
     try{
         const { userComment } = req.body;
-        await comment.findByIdAndUpdate(req.params.id,userComment);
+        await comment.findByIdAndUpdate(req.params.id,{userComment});
         res.send({
             success: true,
             message: 'Comment updated successfully.'
@@ -254,12 +272,20 @@ router.delete('/blog/:blogId/comment/:id',authenticate,async(req,res)=>{
     try {
         const deletedComment = await comment.findByIdAndDelete(req.params.id);
         const deletedId = deletedComment._id;
-        await blog.updateOne({ _id: req.params.blogId }, { $pull: { comments: { _id: deletedId } } });
+        
+        await blog.findByIdAndUpdate(
+            req.params.blogId,
+            {
+                $pull: { comments: { $in: [[deletedId]] } }
+            }
+        );
+
         res.send({
             success: true,
             message: 'Comment deleted successfully.'
         })
     } catch (error) {
+        console.log(error);
         res.send({
             success:false,
             message: 'The comment could not be deleted.'
