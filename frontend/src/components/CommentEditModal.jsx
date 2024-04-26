@@ -1,38 +1,41 @@
 import { useState, useContext, useEffect, useRef } from "react";
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useRouteLoaderData,useNavigate, useParams, useLoaderData } from 'react-router-dom';
 import axios from 'axios';
 import Cookie from 'js-cookie';
 import { toast } from 'react-toastify'
 
 import { ModalContext } from "../store/ModalContextProvider";
 import { AuthenticationContext } from "../store/AuthenticationContext";
+import Cookies from "js-cookie";
 
 
-export default function CommentModal(){
+export default function CommentEditModal(){
     
     const commentModal = useRef(null);
     const navigate = useNavigate();
 
-    const { blogId } = useParams();
+    // params defined in the router routes
+    const { blogId,commentId } = useParams();
+    const data = useLoaderData();
 
-    const { commentModalState, toggleCommentModalState } = useContext(ModalContext);
+    const { commentEditModalState, toggleCommentEditModalState } = useContext(ModalContext);
     const { isAuthenticated } = useContext(AuthenticationContext);
     
     const [ btnIsDisabled, setBtnIsDisabled ] = useState(!isAuthenticated);
-    const [ comment, setComment ] = useState('');
+    const [ comment, setComment ] = useState(data?.userComment || '');
 
     useEffect(()=>{
         setBtnIsDisabled(!isAuthenticated)
         if(commentModal){
-            if(commentModalState){
+            if(commentEditModalState){
                 commentModal.current.showModal();
             }
             else{
                 commentModal.current.close();
             }
         }
-    },[isAuthenticated,commentModalState])
+    },[isAuthenticated,commentEditModalState])
 
     function handleKeyDown(e){
         if(e.key==='Escape'){
@@ -41,7 +44,7 @@ export default function CommentModal(){
     }
 
     function handleModalClose(){
-        toggleCommentModalState();
+        toggleCommentEditModalState();
         navigate(`/blogs/blog/${blogId}`);
     }
 
@@ -51,7 +54,7 @@ export default function CommentModal(){
 
     async function handleCommentFormSubmit(){
         setBtnIsDisabled(true);
-        const response = await axios.post(import.meta.env.VITE_BACKEND_URL+`blog/${blogId}/comment`,{userComment:comment},{
+        const response = await axios.patch(import.meta.env.VITE_BACKEND_URL+`blog/${blogId}/comment/${commentId}`,{userComment:comment},{
             headers:{
                 Authorization: `Bearer ${Cookie.get('authToken')}`
             }
@@ -74,7 +77,7 @@ export default function CommentModal(){
         }
         setComment('');
         setBtnIsDisabled(false);
-        toggleCommentModalState();
+        toggleCommentEditModalState();
         navigate(`/blogs/blog/${blogId}`);
     }
 
@@ -83,8 +86,18 @@ export default function CommentModal(){
             <button className="absolute top-4 right-2 p-2 outline-none text-2xl" onClick={handleModalClose}>x</button>
             <div className="h-full w-full px-10 pt-14 pb-8 flex flex-col">
                 <textarea name="comment" cols="20" rows="10" value={comment} onChange={(e)=>{handleCommentChange(e)}} className="w-full p-2 outline-none border-2 border-stone-600 rounded-lg" placeholder="Comment..."></textarea>
-                <button className="mr-auto ml-auto mt-auto py-3 px-4 border-[1.5px] border-stone-600 rounded-lg hover:bg-stone-400 transition-colors duration-300" disabled={btnIsDisabled}onClick={handleCommentFormSubmit}>Post</button>
+                <button className="mr-auto ml-auto mt-auto py-3 px-4 border-[1.5px] border-stone-600 rounded-lg hover:bg-stone-400 transition-colors duration-300" disabled={btnIsDisabled}onClick={handleCommentFormSubmit}>Update</button>
             </div>
         </dialog>
     );
+}
+
+
+export async function loader({params:{commentId}}){
+    const response = await axios.get(import.meta.env.VITE_BACKEND_URL+`fetch-comment/${commentId}`,{
+        headers: {
+            Authorization: `Bearer ${Cookies.get('authToken')}`
+        }
+    });
+    return response.data;
 }

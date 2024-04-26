@@ -22,6 +22,7 @@ import BlogLandingPage , {loader as blogLandingLoader} from './components/BlogLa
 import EditBlogForm from './pages/EditBlogForm';
 import CommentModal from './components/CommentModal';
 import PageNotFound from './pages/NotFound';
+import CommentEditModal, {loader as commentEditModalLoader} from './components/CommentEditModal';
 
 function App() {
 
@@ -53,7 +54,7 @@ function App() {
               element: <CreateBlog />,
             },
             {
-              path: 'blog/:id',
+              path: 'blog/:blogId',
               loader: blogLandingLoader,
               id: 'landing-loader',
               children:[
@@ -69,6 +70,11 @@ function App() {
                 {
                   path: 'comment',
                   element: <CommentModal />
+                },
+                {
+                  path: 'edit-comment/:commentId',
+                  element: <CommentEditModal />,
+                  loader: commentEditModalLoader
                 }
               ]
             },

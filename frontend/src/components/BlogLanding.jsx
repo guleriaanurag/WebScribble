@@ -86,9 +86,8 @@ export default function BlogLandingPage(){
     );
 }
 
-export async function loader({params}){
-    const{id} = params;
-    const response = await axios.get(import.meta.env.VITE_BACKEND_URL+`blog/${id}`);
+export async function loader({params:{blogId}}){
+    const response = await axios.get(import.meta.env.VITE_BACKEND_URL+`blog/${blogId}`);
     if(response.data.sucess === false){
         alert(response.data.message);
     }

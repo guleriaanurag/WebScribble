@@ -11,7 +11,7 @@ export default function Introduction() {
             <p className="leading-7">
                 Dive into a world of creativity and knowledge at Web Scribbles. Our platform is a hub for insightful blogs, engaging stories, and diverse perspectives. Whether you're an aspiring writer or a curious reader, you're invited to be a part of this vibrant community.
             </p>
-            <img src={img} className="w-[40%] h-[50%] m-auto mt-5 max-md:w-[60%] max-md:h-[60%]" alt="Writing......" />
+            <img src={img} className="w-[40%] h-[50%] m-auto mt-5 max-md:w-[60%] max-md:h-[60%] rounded-3xl" alt="Writing......" />
             <p className="leading-7 mt-4">
                 At Web Scribbles, we believe in the power of words to inspire, inform, and connect. Discover thought-provoking articles, captivating narratives, and a wealth of information crafted by our talented community of contributors.
             </p>
