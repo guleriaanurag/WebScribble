@@ -2,13 +2,13 @@ export const formatTimeDifference = (commentCreatedAt) => {
     const now = new Date();
     const commentDate = new Date(commentCreatedAt);
     const differenceInMilliseconds = now.getTime() - commentDate.getTime();
-    const secondsInADay = 24*60*60*1000;
+    const milliSecondsInADay = 24*60*60*1000;
 
-    const years = Math.floor(differenceInMilliseconds / (secondsInADay * 365));
-    const remainingMillisecondsAfterYears = differenceInMilliseconds % (secondsInADay * 365);
+    const years = Math.floor(differenceInMilliseconds / (milliSecondsInADay * 365));
+    const remainingMillisecondsAfterYears = differenceInMilliseconds % (milliSecondsInADay * 365);
 
-    const months = Math.floor(remainingMillisecondsAfterYears / (secondsInADay * 30));
-    const days = Math.floor(remainingMillisecondsAfterYears / secondsInADay); // Calculate days directly
+    const months = Math.floor(remainingMillisecondsAfterYears / (milliSecondsInADay * 30));
+    const days = Math.floor(remainingMillisecondsAfterYears / milliSecondsInADay); // Calculate days directly
 
     let formattedDifference = '';
     if (years >= 1) {
