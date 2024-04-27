@@ -40,7 +40,8 @@ export default function Comment({comment}){
     },[isAuthenticated])
 
     // calculating time difference of current time and comment creationtime
-    const timeDiff = formatTimeDifference(comment.createdAt);
+    const baseTime = comment.createdAt >= comment.updatedAt ? {time: comment.createdAt, updated:false} : {time:comment.updatedAt,updated:true} ;
+    const timeDiff = formatTimeDifference(baseTime.time,baseTime.updated);
 
     // function to handle comment deletion
 
