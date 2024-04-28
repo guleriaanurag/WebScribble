@@ -9,18 +9,23 @@ import { useNavigate } from 'react-router-dom';
 
 export default function PostInteraction(){
 
-    const {toggleCommentModalState} = useContext(ModalContext);
+    const {toggleCommentModalState,toggleShareModalState} = useContext(ModalContext);
     const navigate = useNavigate();
 
-    function handleCommentModal(){
+    function handleOpeningCommentModal(){
         toggleCommentModalState();
         navigate('comment');
     }
 
+    function handleOpeningShareModal(){
+        toggleShareModalState();
+        navigate('share');
+    }
+
     return (
         <div className='flex gap-4 mt-6 w-full px-40 max-lg:px-5'>
-            <FaRegComment className='text-2xl cursor-pointer' onClick={handleCommentModal}/>
-            <IoShareSocialOutline className='text-2xl cursor-pointer'/>
+            <FaRegComment className='text-2xl cursor-pointer' onClick={handleOpeningCommentModal}/>
+            <IoShareSocialOutline className='text-2xl cursor-pointer' onClick={handleOpeningShareModal}/>
         </div>
     );
 }

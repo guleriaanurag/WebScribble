@@ -23,6 +23,7 @@ import EditBlogForm from './pages/EditBlogForm';
 import CommentModal from './components/CommentModal';
 import PageNotFound from './pages/NotFound';
 import CommentEditModal, {loader as commentEditModalLoader} from './components/CommentEditModal';
+import ShareModal from './components/ShareModal';
 
 function App() {
 
@@ -75,6 +76,10 @@ function App() {
                   path: 'edit-comment/:commentId',
                   element: <CommentEditModal />,
                   loader: commentEditModalLoader
+                },
+                {
+                  path: 'share',
+                  element:  <ShareModal />
                 }
               ]
             },
