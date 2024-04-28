@@ -47,8 +47,6 @@ app.get('/image/:imageName', async (req, res) => {
 
         if (exists) {
             res.sendFile(imagepath);
-        } else {
-            res.sendFile(path.join(__dirname, 'uploads', 'NoImage.jpg'));
         }
     } catch (error) {
         console.error(error);
