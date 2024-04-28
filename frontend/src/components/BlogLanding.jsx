@@ -12,6 +12,7 @@ import { sanitizeBlog } from "../assets/validationAndSanitization";
 import { AuthenticationContext } from "../store/AuthenticationContext";
 import CommentWrapper from "./CommentWrapper";
 import { ModalContext } from "../store/ModalContextProvider";
+import noImage from '../assets/noImage.png';
 
 export default function BlogLandingPage(){
     const data = useLoaderData();
@@ -78,7 +79,8 @@ export default function BlogLandingPage(){
                     <button className="pl-4 hover:text-red-700" onClick={handleDeleteBlog}>Delete</button>
                 </div>
             )}
-            <img src={`${import.meta.env.VITE_BACKEND_URL}image/${data.imageName}`} alt={data.title} className="w-[80%] h-[80%] object-contain max-lg:object-fill max-md:w-[90%] max-md:h-[70%]"/>
+            {data.imageName && <img src={`${import.meta.env.VITE_BACKEND_URL}image/${data.imageName}`} alt={data.title} className="w-[80%] h-[80%] object-contain max-lg:object-fill max-md:w-[90%] max-md:h-[70%]"/>}
+            {!data.imageName && <img src={noImage} alt={data.title} className="w-[80%] h-[80%] object-contain max-lg:object-fill max-md:w-[90%] max-md:h-[70%]"/>}
             <div className="blog-content mt-10 px-40 max-lg:px-5" dangerouslySetInnerHTML={{__html: sanitizedContent}}></div>
             <PostInteraction />
             <CommentWrapper comments={data.comments}/>
