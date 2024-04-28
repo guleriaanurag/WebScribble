@@ -48,6 +48,9 @@ app.get('/image/:imageName', async (req, res) => {
         if (exists) {
             res.sendFile(imagepath);
         }
+        else{
+            res.status(404).send('Image not found')
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
