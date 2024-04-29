@@ -19,8 +19,8 @@ export default function Introduction() {
                 Ready to embark on a journey of exploration? Click the link below to start reading the latest blogs and immerse yourself in a world where every scribble tells a unique story.
             </p>
             <p className="mt-6">
-            <Link to='blogs' className="text-sky-600 text-2xl underline hover:text-sky-300 p-2">Explore Blogs</Link> OR
-            <Link to='blogs/post' className="text-sky-600 p-2 text-2xl underline hover:text-sky-300">Create a Blog</Link>
+            <Link to='blogs' className="text-sky-600 text-2xl underline transition-colors duration-300 hover:text-sky-300 p-2">Explore Blogs</Link> OR
+            <Link to='blogs/post' className="text-sky-600 p-2 text-2xl transition-colors duration-300 underline hover:text-sky-300">Create a Blog</Link>
             </p>
         </div>
     );
