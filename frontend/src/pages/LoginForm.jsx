@@ -131,12 +131,21 @@ export default function LoginForm() {
                 <input type="checkbox" name="rememberMe" className="w-4 h-4 cursor-pointer"/>
                 <label htmlFor="rememberMe">Remember Me</label>
             </div>
-            <button
-            className="bg-stone-800 text-stone-100 my-2 w-[20%] mx-auto p-4 rounded-lg max-md:w-24"
-            disabled={btnDisabled}
-            >
-            Login
-            </button>
+            <div className="flex gap-14 justify-center">
+                <button
+                className="bg-stone-800 text-stone-100 my-2 w-[20%] p-4 rounded-lg max-md:w-24"
+                disabled={btnDisabled}
+                >
+                Login
+                </button>
+                <Link to='/' className="bg-stone-800 text-stone-100 my-2 w-[20%] p-4 rounded-lg max-md:w-24">
+                    <button
+                        className="h-full w-full"
+                    >
+                        Home
+                    </button>
+                </Link>
+            </div>
             <p className="text-center mt-2 text-lg">
             Not a member?
             <Link
