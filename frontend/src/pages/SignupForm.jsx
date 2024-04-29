@@ -114,19 +114,19 @@ export default function SignupForm() {
                     id="password"
                     className="py-1 px-2 bg-slate-300"
                 />
-                <div className="flex">
+                <div className="flex gap-14 justify-center">
                     <button
-                        type="button"
-                        className="bg-stone-800 text-stone-100 mt-6 mx-auto p-4 rounded-lg max-md:w-[40%]"
-                        disabled={btnDisabled}
-                    >
-                        <Link to="/">Cancel</Link>
-                    </button>
-                    <button
-                        className="bg-stone-800 text-stone-100 mt-6 mx-auto p-4 rounded-lg max-md:w-[40%]"
+                        className="bg-stone-800 text-stone-100 mt-6 p-4 rounded-lg max-md:w-[40%]"
                         disabled={btnDisabled}
                     >
                         Register
+                    </button>
+                    <button
+                        type="button"
+                        className="bg-stone-800 text-stone-100 mt-6 p-4 rounded-lg max-md:w-[40%]"
+                        disabled={btnDisabled}
+                    >
+                        <Link to="/">Cancel</Link>
                     </button>
                 </div>
             </form>
