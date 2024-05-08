@@ -117,6 +117,7 @@ function App() {
     <AuthenticationContextProvider>
       <ModalContextProvider>
         <RouterProvider router={router}>
+          {/* {router} */}
         </RouterProvider>
       </ModalContextProvider>
     </AuthenticationContextProvider>
