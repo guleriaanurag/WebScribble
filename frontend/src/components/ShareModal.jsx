@@ -40,6 +40,26 @@ export default function ShareModal(){
         navigate(`/blogs/blog/${blogId}`);
     }
 
+    // const style = {
+    //     root: {
+    //         borderRadius: 3,
+    //         border: 0,
+    //         color: 'white',
+    //         height: '100%',
+    //         width: '100%',
+    //         margin: 'auto',
+    //         display: 'flex',
+    //         flexDirection: 'column',
+    //         justifyContent: 'space-evenly',
+    
+    //     },
+    //     copyContainer: {
+    //         border: '0px',
+    //         background: 'rgb(0,0,0,0.7)',
+    //     }
+    // };
+
+    
     const style = {
         root: {
             borderRadius: 3,
@@ -56,6 +76,21 @@ export default function ShareModal(){
         copyContainer: {
             border: '0px',
             background: 'rgb(0,0,0,0.7)',
+        },
+        button: {
+            cursor: 'pointer',
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: '#ccc',
+            width: '40px',
+            height: '40px',
+            margin: '5px'
+        },
+        icon: {
+            width: 'auto',
+            height: 'auto',
         }
     };
 
