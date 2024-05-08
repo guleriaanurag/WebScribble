@@ -76,6 +76,8 @@ export default function ShareModal(){
         copyContainer: {
             border: '0px',
             background: 'rgb(0,0,0,0.7)',
+            height: 'auto',
+            width: 'auto'
         },
         button: {
             cursor: 'pointer',
