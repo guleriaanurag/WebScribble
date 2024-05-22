@@ -72,6 +72,7 @@ export default function ShareModal(){
                 <div className="icon-box flex flex-wrap gap-2">
                     <FacebookShareButton url={url}>
                         <FacebookIcon round className="w-10 h-10"/>
+                        {/* <SocialIcon url="https://facebook.com"/> */}
                     </FacebookShareButton>
                     <FacebookMessengerShareButton 
                         url={url}
