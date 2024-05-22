@@ -14,8 +14,8 @@
 
 ```env
 PORT = {Any port you want your server to listen on} # For example, PORT=3000
-DB_URL = {Your MongoDB Database url}
-TOKEN_SECRET = {A secret for signing JWT Tokens}
+DB_URL = {Your MongoDB Database url} # For example 'mongodb://127.0.0.1:27017/WebScribles'
+TOKEN_SECRET = {A string for signing JWT Tokens}
 ```
 
 **Open Your Terminal**
