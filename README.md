@@ -14,7 +14,7 @@
 
 ```env
 PORT = {Any port you want your server to listen on} # For example, PORT=3000
-DB_URL = {Your MongoDB Database name}
+DB_URL = {Your MongoDB Database url}
 TOKEN_SECRET = {A secret for signing JWT Tokens}
 ```
 
