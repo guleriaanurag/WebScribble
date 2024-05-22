@@ -39,6 +39,7 @@ npm run dev
 ```
 
 ## 📄 Todos
+- [X] Add Loading States
 - [ ] Unit Testing
 - [ ] Convert the project to TypeScript
 
