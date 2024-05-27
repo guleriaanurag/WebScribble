@@ -25,8 +25,6 @@ import { FaSquareXTwitter } from 'react-icons/fa6';
 
 import { MdEmail } from 'react-icons/md';
 
-import { ShareSocial } from 'react-share-social';
-
 import { ModalContext } from "../store/ModalContextProvider";
 import { AuthenticationContext } from "../store/AuthenticationContext";
 
