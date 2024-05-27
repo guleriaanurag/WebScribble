@@ -72,7 +72,6 @@ export default function ShareModal(){
                 <div className="icon-box flex flex-wrap gap-2">
                     <FacebookShareButton url={url}>
                         <FacebookIcon round className="w-10 h-10"/>
-                        {/* <SocialIcon url="https://facebook.com"/> */}
                     </FacebookShareButton>
                     <FacebookMessengerShareButton 
                         url={url}
@@ -106,7 +105,7 @@ export default function ShareModal(){
                         <EmailIcon round className="h-10 w-10"/>
                     </EmailShareButton>
                 </div>
-                <div className="copy-container flex items-start justify-evenly text-stone-50 bg-stone-900 p-2 rounded-lg">
+                <div className="copy-container flex items-center justify-evenly text-stone-50 bg-stone-900 p-2 rounded-lg">
                     <div className="h-auto w-[80%] overflow-scroll hide-scroll items-center p-0">
                         <p>{url}</p>
                     </div>
