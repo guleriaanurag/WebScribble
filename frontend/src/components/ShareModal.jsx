@@ -75,40 +75,40 @@ export default function ShareModal(){
             <button className="absolute top-4 right-4 p-2 outline-none text-2xl z-50" onClick={handleModalClose}>x</button>
             <div className="h-full w-full flex flex-col p-3 justify-evenly">
                 <div className="icon-box flex flex-wrap gap-2">
-                    <FacebookShareButton url={url}>
                         <FaFacebook className="w-10 h-10 text-blue-600"/>
+                    <FacebookShareButton url={url}>
                     </FacebookShareButton>
                     <FacebookMessengerShareButton 
                         url={url}
                         redirectUri={url}
                     >
-                        <FaFacebookMessenger className="w-10 h-10 text-blue-600"/>
                     </FacebookMessengerShareButton>
+                        <FaFacebookMessenger className="w-10 h-10 text-blue-600"/>
                     <LinkedinShareButton 
                         url={url}
                     >
-                        <FaLinkedin className="h-10 w-10 text-blue-600"/>
                     </LinkedinShareButton>
+                        <FaLinkedin className="h-10 w-10 text-blue-600"/>
                     <TwitterShareButton url={url}>
-                        <FaSquareXTwitter className="h-10 w-10"/>
                     </TwitterShareButton>
+                        <FaSquareXTwitter className="h-10 w-10"/>
                     <WhatsappShareButton url={url}>
-                        <FaWhatsapp className="h-10 w-10 bg-emerald-500 text-white"/>
                     </WhatsappShareButton>
+                        <FaWhatsapp className="h-10 w-10 bg-emerald-500 text-white"/>
                     <RedditShareButton 
                         url={url}
                     >
-                        <FaReddit className="h-10 w-10 text-orange-500"/>
                     </RedditShareButton>
+                        <FaReddit className="h-10 w-10 text-orange-500"/>
                     <PinterestShareButton url={url}>
-                        <FaPinterest className="h-10 w-10 text-red-600"/>
                     </PinterestShareButton>
+                        <FaPinterest className="h-10 w-10 text-red-600"/>
                     <EmailShareButton 
                         url={url}
                         subject="Check this blog out!!"
                     >
-                        <MdEmail className="w-10 h-10 text-gray-600"/>
                     </EmailShareButton>
+                        <MdEmail className="w-10 h-10 text-gray-600"/>
                 </div>
                 <div className="copy-container flex items-center justify-evenly text-stone-50 bg-stone-900 p-2 rounded-lg">
                     <div className="h-auto w-[80%] overflow-scroll hide-scroll items-center p-0">
