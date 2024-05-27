@@ -75,7 +75,7 @@ export default function ShareModal(){
     return (
         <dialog ref={shareModal} className="w-[40vw] h-[40vh] rounded-2xl max-lg:h-[43vh] max-lg:w-[80vw]" onKeyDown={(e)=>handleKeyDown(e)}>
             <button className="absolute top-4 right-4 p-2 outline-none text-2xl z-50" onClick={handleModalClose}>x</button>
-            {/* <div className="h-full w-full flex flex-col p-3 justify-evenly">
+            <div className="h-full w-full flex flex-col p-3 justify-evenly">
                 <div className="icon-box flex flex-wrap gap-2">
                         <FaFacebook className="w-10 h-10 text-blue-600"/>
                     <FacebookShareButton url={url}>
@@ -123,8 +123,7 @@ export default function ShareModal(){
                         {isTextCopied ? 'Copied' : 'Copy'}
                     </p>
                 </div>
-            </div> */}
-            <ShareSocial url={url} socialTypes={['facebook','twitter','reddit','linkedin','whatsapp','email']}/>
+            </div>
         </dialog>
     );
 }
