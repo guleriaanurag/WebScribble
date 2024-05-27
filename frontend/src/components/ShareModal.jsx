@@ -3,22 +3,27 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { 
     FacebookShareButton, 
-    FacebookIcon,
-    FacebookMessengerIcon,
     FacebookMessengerShareButton,
     LinkedinShareButton,
-    LinkedinIcon,
-    XIcon,
     TwitterShareButton,
     WhatsappShareButton,
-    WhatsappIcon,
     RedditShareButton,
-    RedditIcon,
     EmailShareButton,
-    EmailIcon,
     PinterestShareButton,
-    PinterestIcon
-} from 'react-share'
+} from 'react-share';
+
+import {
+    FaFacebook,
+    FaFacebookMessenger,
+    FaLinkedin,
+    FaPinterest,
+    FaReddit,
+    FaWhatsapp
+} from 'react-icons/fa';
+
+import { FaSquareXTwitter } from 'react-icons/fa6';
+
+import { MdEmail } from 'react-icons/md';
 
 import { ModalContext } from "../store/ModalContextProvider";
 import { AuthenticationContext } from "../store/AuthenticationContext";
@@ -71,38 +76,38 @@ export default function ShareModal(){
             <div className="h-full w-full flex flex-col p-3 justify-evenly">
                 <div className="icon-box flex flex-wrap gap-2">
                     <FacebookShareButton url={url}>
-                        <FacebookIcon round className="w-10 h-10"/>
+                        <FaFacebook className="w-10 h-10 text-blue-600"/>
                     </FacebookShareButton>
                     <FacebookMessengerShareButton 
                         url={url}
                         redirectUri={url}
                     >
-                        <FacebookMessengerIcon round className="w-10 h-10"/>
+                        <FaFacebookMessenger className="w-10 h-10 text-blue-600"/>
                     </FacebookMessengerShareButton>
                     <LinkedinShareButton 
                         url={url}
                     >
-                        <LinkedinIcon round className="w-10 h-10"/>
+                        <FaLinkedin className="h-10 w-10 text-blue-600"/>
                     </LinkedinShareButton>
                     <TwitterShareButton url={url}>
-                        <XIcon round className="w-10 h-10"/>
+                        <FaSquareXTwitter className="h-10 w-10"/>
                     </TwitterShareButton>
                     <WhatsappShareButton url={url}>
-                        <WhatsappIcon round className="h-10 w-10"/>
+                        <FaWhatsapp className="h-10 w-10 bg-emerald-500 text-white"/>
                     </WhatsappShareButton>
                     <RedditShareButton 
                         url={url}
                     >
-                        <RedditIcon round className="h-10 w-10"/>
+                        <FaReddit className="h-10 w-10 text-orange-500"/>
                     </RedditShareButton>
                     <PinterestShareButton url={url}>
-                        <PinterestIcon round className="h-10 w-10"/>
+                        <FaPinterest className="h-10 w-10 text-red-600"/>
                     </PinterestShareButton>
                     <EmailShareButton 
                         url={url}
                         subject="Check this blog out!!"
                     >
-                        <EmailIcon round className="h-10 w-10"/>
+                        <MdEmail className="w-10 h-10 text-gray-600"/>
                     </EmailShareButton>
                 </div>
                 <div className="copy-container flex items-center justify-evenly text-stone-50 bg-stone-900 p-2 rounded-lg">
